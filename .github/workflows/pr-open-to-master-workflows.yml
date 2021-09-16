@@ -1,0 +1,40 @@
+name: PR Open to Master Workflows
+
+on:
+  pull_request:
+    types: [ opened ]
+    branches:
+      - master
+
+jobs:
+  postman-test-run:
+    name: "Postman Regression Test"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MASTER_BRANCH_ACCESS_TOKEN }}
+          ref: develop
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Run Regression Tests
+        run: |
+          npm install
+          npm run-script postmanDevelop --adminAuthToken=admin-auth-token=${{ secrets.ADMIN_AUTH_TOKEN }} --responseEncryptionSecret=response-encryption-secret=${{ secrets.RESPONSE_ENCRYPTION_SECRET }}
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: PostmanReports
+          path: ./assets/test-results
