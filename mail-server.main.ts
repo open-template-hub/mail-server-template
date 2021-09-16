@@ -32,7 +32,7 @@ Routes.mount(app);
 const port: string = process.env.PORT || ('4006' as string);
 
 app.listen(port, () => {
-  console.info('Auth Server is running on port', port);
+  console.info('Mail Server is running on port', port);
 
   const usageUtil = new UsageUtil();
   const memoryUsage = usageUtil.getMemoryUsage();
