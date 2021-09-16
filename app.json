@@ -1,24 +1,18 @@
 {
-  "name": "Auth Server Template",
-  "description": "Authentication Server Template supporting both regular signup and login processes and login with social networks that support OAuth and OAuth2.0",
-  "repository": "https://github.com/open-template-hub/auth-server-nodejs-template",
+  "name": "Mail Server Template",
+  "description": "Mail Server Template supporting both regular public and private mail send processes in Message Queue Architecture",
+  "repository": "https://github.com/open-template-hub/mail-server-template",
   "logo": "https://raw.githubusercontent.com/open-template-hub/open-template-hub.github.io/master/assets/logo/brand-logo.png",
   "keywords": [
-    "authentication",
+    "mail",
     "server",
     "template",
     "nodejs",
     "express",
     "nodejs-express",
-    "oauth",
-    "oauth2",
-    "social-login",
-    "facebook-login",
-    "google-login",
-    "linkedin-login",
-    "twitter-login",
-    "twitch-login",
-    "github-login",
+    "imap",
+    "smtp",
+    "sender",
     "open-template-hub"
   ]
 }
