@@ -8,8 +8,6 @@ import { PUBLIC_MAIL_QUEUE } from '../../app.constant';
 import { Mail } from '../interface/mail.interface';
 
 export class MailController {
-  constructor() {}
-
   /**
    * send public email
    * @param db database

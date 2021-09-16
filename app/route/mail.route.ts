@@ -1,8 +1,8 @@
 /**
- * @description holds auth routes
+ * @description holds mail routes
  */
 
-import { ResponseCode, User } from '@open-template-hub/common';
+import { ResponseCode } from '@open-template-hub/common';
 import { Request, Response } from 'express';
 import Router from 'express-promise-router';
 import { MailController } from '../controller/mail.controller';
