@@ -10,6 +10,7 @@ import {
 } from '@open-template-hub/common';
 import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
+import { PublicMailQueue } from '../queue/public-mail.queue';
 import {
   adminRoutes as mailAdminRoutes,
   publicRoutes as mailPublicRoutes,
@@ -51,6 +52,10 @@ export namespace Routes {
     );
 
     message_queue_provider.connect();
+
+    var channel = new Environment().args().mqArgs?.mailServerMessageQueueChannel as string;
+    var publicMailQueue = new PublicMailQueue();
+    message_queue_provider.consume(channel, publicMailQueue.onMessage);
 
     publicRoutes = [
       ...populateRoutes(subRoutes.monitor, monitorPublicRoutes),
