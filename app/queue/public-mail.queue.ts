@@ -1,5 +1,7 @@
 export class PublicMailQueue {
   onMessage = (msg: any) => {
-    console.log('Message Received: ', msg);
-  }
+    var msgStr = msg.content.toString();
+    var msgObj = JSON.parse(msgStr);
+    console.log('Message Received: ', msgObj);
+  };
 }
