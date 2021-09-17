@@ -16,6 +16,7 @@ export class Environment {
 
     var mqArgs = {
       messageQueueConnectionUrl: process.env.MESSAGE_QUEUE_CONNECTION,
+      mailServerMessageQueueChannel: process.env.MAIL_SERVER_QUEUE_CHANNEL,
     } as MqArgs;
 
     var tokenArgs = {

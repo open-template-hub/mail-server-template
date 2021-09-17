@@ -63,6 +63,7 @@ MAIL_PASSWORD={Mail Password}
 MAIL_PORT={SMTP Port}
 MAIL_USERNAME={Mail Address}
 MESSAGE_QUEUE_CONNECTION={RabbitMQ Connection Url}
+MAIL_SERVER_QUEUE_CHANNEL={Mail Server Queue Channel Name}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 ```
 

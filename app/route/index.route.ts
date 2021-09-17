@@ -6,8 +6,8 @@ import {
   context,
   EncryptionUtil,
   ErrorHandlerUtil,
+  MessageQueueProvider,
 } from '@open-template-hub/common';
-import { MessageQueueProvider } from '@open-template-hub/common/lib/provider/message-queue.provider';
 import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
 import {
@@ -49,6 +49,7 @@ export namespace Routes {
     message_queue_provider = new MessageQueueProvider(
       environment.args(),
     );
+
     message_queue_provider.connect();
 
     publicRoutes = [

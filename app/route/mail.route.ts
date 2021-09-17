@@ -25,7 +25,6 @@ router.post(subRoutes.public, async (req: Request, res: Response) => {
   const mailController = new MailController();
   const context = res.locals.ctx;
   const response = await mailController.public(
-    context.message_queue_provider,
     req.body as Mail
   );
   res.status(ResponseCode.CREATED).json(response);
