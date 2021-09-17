@@ -47,14 +47,13 @@ export namespace Routes {
   export function mount(app: any) {
     environment = new Environment();
 
-    message_queue_provider = new MessageQueueProvider(
-      environment.args(),
-    );
+    message_queue_provider = new MessageQueueProvider(environment.args());
 
     message_queue_provider.connect();
 
-    var channel = new Environment().args().mqArgs?.mailServerMessageQueueChannel as string;
-    var publicMailQueue = new PublicMailQueue();
+    var channel = new Environment().args().mqArgs
+      ?.mailServerMessageQueueChannel as string;
+    var publicMailQueue = new PublicMailQueue(message_queue_provider, channel);
     message_queue_provider.consume(channel, publicMailQueue.onMessage);
 
     publicRoutes = [
