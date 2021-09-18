@@ -1,1 +1,0 @@
-export const PUBLIC_MAIL_MQ_ACTION = 'PUBLIC_MAIL';

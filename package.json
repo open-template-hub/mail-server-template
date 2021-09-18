@@ -8,7 +8,7 @@
     "start": "node version-generator.ts > ./version.ts && ts-node mail-server.main.ts"
   },
   "dependencies": {
-    "@open-template-hub/common": "^2.1.2",
+    "@open-template-hub/common": "^2.1.8",
     "@types/cors": "^2.8.9",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.6",
