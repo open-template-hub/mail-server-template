@@ -62,8 +62,12 @@ MAIL_HOST={SMTP Host}
 MAIL_PASSWORD={Mail Password}
 MAIL_PORT={SMTP Port}
 MAIL_USERNAME={Mail Address}
-MESSAGE_QUEUE_CONNECTION={RabbitMQ Connection Url}
+
+CLOUDAMQP_URL={RabbitMQ Connection Url}
+
 MAIL_SERVER_QUEUE_CHANNEL={Mail Server Queue Channel Name}
+
+ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 ```
 

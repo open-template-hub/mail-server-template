@@ -10,7 +10,7 @@ import {
 } from '@open-template-hub/common';
 import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
-import { PublicMailQueue } from '../queue/public-mail.queue';
+import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import {
   adminRoutes as mailAdminRoutes,
   publicRoutes as mailPublicRoutes,
@@ -49,10 +49,9 @@ export namespace Routes {
 
     message_queue_provider = new MessageQueueProvider(environment.args());
 
-    var channel = new Environment().args().mqArgs
-      ?.mailServerMessageQueueChannel as string;
-    var publicMailQueue = new PublicMailQueue(message_queue_provider, channel);
-    message_queue_provider.consume(channel, publicMailQueue.onMessage, 1);
+    const channel = new Environment().args().mqArgs?.mailServerMessageQueueChannel as string;
+    const mailQueueConsumer = new MailQueueConsumer(message_queue_provider, channel);
+    message_queue_provider.consume(channel, mailQueueConsumer.onMessage, 1);
 
     publicRoutes = [
       ...populateRoutes(subRoutes.monitor, monitorPublicRoutes),
