@@ -69,6 +69,8 @@ MAIL_SERVER_QUEUE_CHANNEL={Mail Server Queue Channel Name}
 
 ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
+
+ORCHESTRATION_SERVER_QUEUE_CHANNEL= {Orchestration Server MQ Channel Name}
 ```
 
 ## Contributors
