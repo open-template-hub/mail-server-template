@@ -49,9 +49,17 @@ export namespace Routes {
 
     message_queue_provider = new MessageQueueProvider(environment.args());
 
-    const channel = new Environment().args().mqArgs?.mailServerMessageQueueChannel as string;
-    const mailQueueConsumer = new MailQueueConsumer(message_queue_provider, channel);
-    message_queue_provider.consume(channel, mailQueueConsumer.onMessage, 1);
+    const channelTag = new Environment().args().mqArgs
+      ?.mailServerMessageQueueChannel as string;
+    message_queue_provider.getChannel(channelTag).then((channel: any) => {
+      const mailQueueConsumer = new MailQueueConsumer(channel);
+      message_queue_provider.consume(
+        channel,
+        channelTag,
+        mailQueueConsumer.onMessage,
+        1
+      );
+    });
 
     publicRoutes = [
       ...populateRoutes(subRoutes.monitor, monitorPublicRoutes),
