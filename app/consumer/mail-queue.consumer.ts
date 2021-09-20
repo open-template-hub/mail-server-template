@@ -14,9 +14,6 @@ export class MailQueueConsumer {
 
       const message: MailActionType = msgObj.message;
 
-      console.log(msgObj.message);
-      console.log(message);
-
       if (message.contactUs) {
         let requeue = false;
 
