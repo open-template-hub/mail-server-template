@@ -31,7 +31,7 @@ export class MailController {
       templateParams
     );
 
-    this.mailUtil.send(
+    await this.mailUtil.send(
       this.environment.args().mailArgs?.mailUsername as string,
       subject,
       body
