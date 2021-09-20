@@ -12,11 +12,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import {
-  adminRoutes as mailAdminRoutes,
-  publicRoutes as mailPublicRoutes,
-  router as mailRouter,
-} from './mail.route';
-import {
   publicRoutes as monitorPublicRoutes,
   router as monitorRouter,
 } from './monitor.route';
@@ -61,13 +56,10 @@ export namespace Routes {
       );
     });
 
-    publicRoutes = [
-      ...populateRoutes(subRoutes.monitor, monitorPublicRoutes),
-      ...populateRoutes(subRoutes.mail, mailPublicRoutes),
-    ];
+    publicRoutes = [...populateRoutes(subRoutes.monitor, monitorPublicRoutes)];
     console.log('Public Routes: ', publicRoutes);
 
-    adminRoutes = [...populateRoutes(subRoutes.mail, mailAdminRoutes)];
+    adminRoutes = [];
     console.log('Admin Routes: ', adminRoutes);
 
     const responseInterceptor = (
@@ -114,7 +106,6 @@ export namespace Routes {
 
     // INFO: Add your routes here
     app.use(subRoutes.monitor, monitorRouter);
-    app.use(subRoutes.mail, mailRouter);
 
     // Use for error handling
     app.use(function (
