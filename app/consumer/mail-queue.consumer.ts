@@ -18,29 +18,27 @@ export class MailQueueConsumer {
       let requeue = false;
 
       if (message.contactUs) {
-        var hook = async () => {
-          return await this.mailController.sendContactUsMail(
-            message.contactUs.params
-          );
+        var contactUsHook = async () => {
+          await this.mailController.sendContactUsMail(message.contactUs.params);
         };
 
-        await this.operate(msg, msgObj, requeue, hook);
+        await this.operate(msg, msgObj, requeue, contactUsHook);
       } else if (message.forgetPassword) {
-        var hook = async () => {
-          return await this.mailController.sendForgetPasswordMail(
+        var forgetPasswordHook = async () => {
+          await this.mailController.sendForgetPasswordMail(
             message.forgetPassword.params
           );
         };
 
-        await this.operate(msg, msgObj, requeue, hook);
+        await this.operate(msg, msgObj, requeue, forgetPasswordHook);
       } else if (message.verifyAccount) {
-        var hook = async () => {
-          return await this.mailController.sendVerifyAccountMail(
+        var verifyAccountHook = async () => {
+          await this.mailController.sendVerifyAccountMail(
             message.verifyAccount.params
           );
         };
 
-        await this.operate(msg, msgObj, requeue, hook);
+        await this.operate(msg, msgObj, requeue, verifyAccountHook);
       } else {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
