@@ -1,6 +1,6 @@
 <p align="center">
    <a href="https://opentemplatehub.com">
-    <img src="https://raw.githubusercontent.com/open-template-hub/open-template-hub.github.io/master/assets/logo/server/auth-server-logo.png" alt="Logo" width=200>
+    <img src="https://raw.githubusercontent.com/open-template-hub/open-template-hub.github.io/master/assets/logo/server/mail-server-logo.png" alt="Logo" width=200>
   </a>
 </p>
 
@@ -62,8 +62,15 @@ MAIL_HOST={SMTP Host}
 MAIL_PASSWORD={Mail Password}
 MAIL_PORT={SMTP Port}
 MAIL_USERNAME={Mail Address}
-MESSAGE_QUEUE_CONNECTION={RabbitMQ Connection Url}
+
+CLOUDAMQP_URL={RabbitMQ Connection Url}
+
+MAIL_SERVER_QUEUE_CHANNEL={Mail Server Queue Channel Name}
+
+ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
+
+ORCHESTRATION_SERVER_QUEUE_CHANNEL= {Orchestration Server MQ Channel Name}
 ```
 
 ## Contributors

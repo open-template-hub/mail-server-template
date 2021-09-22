@@ -6,15 +6,11 @@ import {
   context,
   EncryptionUtil,
   ErrorHandlerUtil,
+  MessageQueueProvider,
 } from '@open-template-hub/common';
-import { MessageQueueProvider } from '@open-template-hub/common/lib/provider/message-queue.provider';
 import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
-import {
-  adminRoutes as mailAdminRoutes,
-  publicRoutes as mailPublicRoutes,
-  router as mailRouter,
-} from './mail.route';
+import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import {
   publicRoutes as monitorPublicRoutes,
   router as monitorRouter,
@@ -46,18 +42,24 @@ export namespace Routes {
   export function mount(app: any) {
     environment = new Environment();
 
-    message_queue_provider = new MessageQueueProvider(
-      environment.args(),
-    );
-    message_queue_provider.connect();
+    message_queue_provider = new MessageQueueProvider(environment.args());
 
-    publicRoutes = [
-      ...populateRoutes(subRoutes.monitor, monitorPublicRoutes),
-      ...populateRoutes(subRoutes.mail, mailPublicRoutes),
-    ];
+    const channelTag = new Environment().args().mqArgs
+      ?.mailServerMessageQueueChannel as string;
+    message_queue_provider.getChannel(channelTag).then((channel: any) => {
+      const mailQueueConsumer = new MailQueueConsumer(channel);
+      message_queue_provider.consume(
+        channel,
+        channelTag,
+        mailQueueConsumer.onMessage,
+        1
+      );
+    });
+
+    publicRoutes = [...populateRoutes(subRoutes.monitor, monitorPublicRoutes)];
     console.log('Public Routes: ', publicRoutes);
 
-    adminRoutes = [...populateRoutes(subRoutes.mail, mailAdminRoutes)];
+    adminRoutes = [];
     console.log('Admin Routes: ', adminRoutes);
 
     const responseInterceptor = (
@@ -104,7 +106,6 @@ export namespace Routes {
 
     // INFO: Add your routes here
     app.use(subRoutes.monitor, monitorRouter);
-    app.use(subRoutes.mail, mailRouter);
 
     // Use for error handling
     app.use(function (
