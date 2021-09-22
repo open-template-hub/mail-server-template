@@ -1,7 +1,7 @@
 {
   "name": "mail-server-template",
   "description": "Mail Server Template supporting public and private mail send operations in MQ architecture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "mail-server.main.ts",
   "scripts": {
