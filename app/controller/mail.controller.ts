@@ -48,7 +48,7 @@ export class MailController {
     var subject = 'Forget Password';
 
     var body = this.builderUtil.buildTemplateFromFile(
-      MailTemplateFilePath.ContactUs,
+      MailTemplateFilePath.ForgetPassword,
       templateParams
     );
 
@@ -66,7 +66,7 @@ export class MailController {
     var subject = 'Verify Account';
 
     var body = this.builderUtil.buildTemplateFromFile(
-      MailTemplateFilePath.ContactUs,
+      MailTemplateFilePath.VerifyAccount,
       templateParams
     );
 
