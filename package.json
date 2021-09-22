@@ -9,7 +9,7 @@
     "startLocal": "nodemon --exec DEBUG=* ts-node mail-server.main.ts"
   },
   "dependencies": {
-    "@open-template-hub/common": "^2.1.13",
+    "@open-template-hub/common": "^2.1.14",
     "@types/cors": "^2.8.9",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.6",
