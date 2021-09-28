@@ -55,22 +55,26 @@ Check project's current **nodejs** and **npm** version from **[package.json](pac
 
 If you don't give **RESPONSE_ENCRYPTION_SECRET**, response encryption mechanism will be disabled automatically.
 
-```applescript
-PORT={Port}
+``` applescript
+PORT=4006
 
-MAIL_HOST={SMTP Host}
+PROJECT=OTH
+MODULE=MailServer
+ENVIRONMENT=Local
+
+CLOUDAMQP_APIKEY={MQ Api Key}
+CLOUDAMQP_URL={MQ Connection Url}
+
+MAIL_SERVER_QUEUE_CHANNEL=oth_mail_queue
+ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue
+    
+MAIL_HOST={Mail Host}
+MAIL_PORT={Mail Port}
+MAIL_USERNAME={Mail Username}
 MAIL_PASSWORD={Mail Password}
-MAIL_PORT={SMTP Port}
-MAIL_USERNAME={Mail Address}
-
-CLOUDAMQP_URL={RabbitMQ Connection Url}
-
-MAIL_SERVER_QUEUE_CHANNEL={Mail Server Queue Channel Name}
-
+    
 ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
-
-ORCHESTRATION_SERVER_QUEUE_CHANNEL= {Orchestration Server MQ Channel Name}
 ```
 
 ## Contributors
