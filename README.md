@@ -65,7 +65,7 @@ ENVIRONMENT=Local
 CLOUDAMQP_APIKEY={MQ Api Key}
 CLOUDAMQP_URL={MQ Connection Url}
 
-MAIL_SERVER_QUEUE_CHANNEL=oth_basic_info_queue
+MAIL_SERVER_QUEUE_CHANNEL=oth_mail_queue
 ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue
     
 MAIL_HOST={Mail Host}
