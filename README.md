@@ -96,13 +96,13 @@ RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 
 ## Contributing
 
-Refer to **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** to see how to contribute to Open Template Hub.
+Refer to **[CONTRIBUTING.md](https://github.com/open-template-hub/.github/blob/master/docs/CONTRIBUTING.md)** to see how to contribute to Open Template Hub.
 
 <br/>
 
 ## Code of Conduct
 
-Refer to **[CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** to see contributor covenant code of conduct.
+Refer to **[CODE_OF_CONDUCT.md](https://github.com/open-template-hub/.github/blob/master/docs/CODE_OF_CONDUCT.md)** to see contributor covenant code of conduct.
 
 <br/>
 
