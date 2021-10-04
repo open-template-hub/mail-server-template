@@ -96,11 +96,15 @@ RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 
 ## Contributing
 
-* Fork it
-* Create your update branch (git checkout -b my-feature-branch)
-* Commit your changes (git commit -am 'Add some features')
-* Push to the branch (git push origin my-feature-branch)
-* Create new Pull Request
+Refer to **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** to see how to contribute to Open Template Hub.
+
+<br/>
+
+## Code of Conduct
+
+Refer to **[CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** to see contributor covenant code of conduct.
+
+<br/>
 
 ## LICENSE
 
