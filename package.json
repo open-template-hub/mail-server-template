@@ -6,7 +6,8 @@
   "main": "mail-server.main.ts",
   "scripts": {
     "start": "node version-generator.ts > ./version.ts && ts-node mail-server.main.ts",
-    "startLocal": "nodemon --exec DEBUG=* ts-node mail-server.main.ts"
+    "startLocal": "nodemon --exec DEBUG=* ts-node mail-server.main.ts",
+    "outdated": "node dependency-checker.ts > docs/OUTDATED.md"
   },
   "dependencies": {
     "@open-template-hub/common": "^2.1.15",
