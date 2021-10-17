@@ -1,12 +1,13 @@
 {
   "name": "mail-server-template",
   "description": "Mail Server Template supporting public and private mail send operations in MQ architecture",
-  "version": "1.0.2",
+  "version": "3.0.0",
   "license": "MIT",
   "main": "mail-server.main.ts",
   "scripts": {
     "start": "node version-generator.ts > ./version.ts && ts-node mail-server.main.ts",
-    "startLocal": "nodemon --exec DEBUG=* ts-node mail-server.main.ts"
+    "startLocal": "nodemon --exec DEBUG=* ts-node mail-server.main.ts",
+    "outdated": "node dependency-checker.ts > docs/OUTDATED.md"
   },
   "dependencies": {
     "@open-template-hub/common": "^2.1.15",
