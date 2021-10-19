@@ -16,7 +16,7 @@ Open Template Hub - Mail Server Template v3
 [![SonarCloud](https://img.shields.io/sonar/quality_gate/open-template-hub_mail-server-template?server=https%3A%2F%2Fsonarcloud.io&label=Sonar%20Cloud&style=for-the-badge&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=open-template-hub_mail-server-template)
 [![BTC](https://img.shields.io/badge/Donate-BTC-ORANGE?color=F5922F&style=for-the-badge&logo=bitcoin)](https://commerce.coinbase.com/checkout/8313af5f-de48-498d-b2cb-d98819ca7d5e)
 
-Mail Server Template supporting both regular public and private mail send processes in Message Queue Architecture
+Mail Server Template is a generic open source mail server that has simple yet powerful design to connect your business with third party email service providing companies (like Gmail, Yahoo or Outlook).
 
 ## Ways to Begin
 
