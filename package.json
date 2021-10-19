@@ -1,6 +1,6 @@
 {
   "name": "mail-server-template",
-  "description": "Mail Server Template is a generic open source mail server that has simple yet powerful design to connect your business with third party email service providing companies (like Gmail, Yahoo or Outlook).",
+  "description": "Mail Server Template is a generic open source mail server that has simple yet powerful design to connect your business with third party email service providers (like Gmail, Yahoo or Outlook).",
   "version": "3.0.1",
   "license": "MIT",
   "main": "mail-server.main.ts",
