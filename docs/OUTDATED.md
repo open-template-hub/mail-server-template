@@ -17,7 +17,7 @@ Following packages are not updated in the develop branch yet. So, if you want to
 | --- | --- | --- | --- | --- |
 | @open-template-hub/common   |  2.1.15   | 2.1.15   |  3.0.1   | mail-server-template |
 | dotenv                      |   8.6.0   |  8.6.0   | 10.0.0   | mail-server-template |
-| express-promise-router      |   3.0.3   |  3.0.3   |  4.1.0   | mail-server-template |
+| express-promise-router      |   3.0.3   |  3.0.3   |  4.1.1   | mail-server-template |
 | ts-node                     |  8.10.2   | 8.10.2   | 10.4.0   | mail-server-template |
 | typescript                  |  3.9.10   | 3.9.10   |  4.5.2   | mail-server-template |
 
