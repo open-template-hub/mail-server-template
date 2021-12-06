@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-Open Template Hub - Mail Server Template v2
+Open Template Hub - Mail Server Template v3
 </h1>
 
 [![License](https://img.shields.io/github/license/open-template-hub/mail-server-template?color=43b043&style=for-the-badge)](LICENSE)
@@ -16,7 +16,7 @@ Open Template Hub - Mail Server Template v2
 [![SonarCloud](https://img.shields.io/sonar/quality_gate/open-template-hub_mail-server-template?server=https%3A%2F%2Fsonarcloud.io&label=Sonar%20Cloud&style=for-the-badge&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=open-template-hub_mail-server-template)
 [![BTC](https://img.shields.io/badge/Donate-BTC-ORANGE?color=F5922F&style=for-the-badge&logo=bitcoin)](https://commerce.coinbase.com/checkout/8313af5f-de48-498d-b2cb-d98819ca7d5e)
 
-Mail Server Template supporting both regular public and private mail send processes in Message Queue Architecture
+Mail Server Template is a generic open source mail server that has simple yet powerful design to connect your business with third party email service providers (like Gmail, Yahoo or Outlook).
 
 ## Ways to Begin
 
@@ -55,22 +55,26 @@ Check project's current **nodejs** and **npm** version from **[package.json](pac
 
 If you don't give **RESPONSE_ENCRYPTION_SECRET**, response encryption mechanism will be disabled automatically.
 
-```applescript
-PORT={Port}
+``` applescript
+PORT=4006
 
-MAIL_HOST={SMTP Host}
+PROJECT=OTH
+MODULE=MailServer
+ENVIRONMENT=Local
+
+CLOUDAMQP_APIKEY={MQ Api Key}
+CLOUDAMQP_URL={MQ Connection Url}
+
+MAIL_SERVER_QUEUE_CHANNEL=oth_mail_queue
+ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue
+    
+MAIL_HOST={Mail Host}
+MAIL_PORT={Mail Port}
+MAIL_USERNAME={Mail Username}
 MAIL_PASSWORD={Mail Password}
-MAIL_PORT={SMTP Port}
-MAIL_USERNAME={Mail Address}
-
-CLOUDAMQP_URL={RabbitMQ Connection Url}
-
-MAIL_SERVER_QUEUE_CHANNEL={Mail Server Queue Channel Name}
-
+    
 ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
-
-ORCHESTRATION_SERVER_QUEUE_CHANNEL= {Orchestration Server MQ Channel Name}
 ```
 
 ## Contributors
@@ -92,11 +96,15 @@ ORCHESTRATION_SERVER_QUEUE_CHANNEL= {Orchestration Server MQ Channel Name}
 
 ## Contributing
 
-* Fork it
-* Create your update branch (git checkout -b my-feature-branch)
-* Commit your changes (git commit -am 'Add some features')
-* Push to the branch (git push origin my-feature-branch)
-* Create new Pull Request
+Refer to **[CONTRIBUTING.md](https://github.com/open-template-hub/.github/blob/master/docs/CONTRIBUTING.md)** to see how to contribute to Open Template Hub.
+
+<br/>
+
+## Code of Conduct
+
+Refer to **[CODE_OF_CONDUCT.md](https://github.com/open-template-hub/.github/blob/master/docs/CODE_OF_CONDUCT.md)** to see contributor covenant code of conduct.
+
+<br/>
 
 ## LICENSE
 
