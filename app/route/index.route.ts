@@ -3,7 +3,7 @@
  */
 
 import {
-  context,
+  context, DebugLogUtil,
   EncryptionUtil,
   ErrorHandlerUtil,
   MessageQueueProvider,
@@ -25,8 +25,9 @@ const subRoutes = {
 export namespace Routes {
   var environment: Environment;
   var message_queue_provider: MessageQueueProvider;
-  const errorHandlerUtil = new ErrorHandlerUtil();
-
+  let errorHandlerUtil: ErrorHandlerUtil;
+  const debugLogUtil = new DebugLogUtil();
+  
   var publicRoutes: string[] = [];
   var adminRoutes: string[] = [];
 
@@ -41,7 +42,7 @@ export namespace Routes {
 
   export function mount(app: any) {
     environment = new Environment();
-
+    errorHandlerUtil = new ErrorHandlerUtil( debugLogUtil, environment.args() );
     message_queue_provider = new MessageQueueProvider(environment.args());
 
     const channelTag = new Environment().args().mqArgs
