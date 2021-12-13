@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-Open Template Hub - Mail Server Template v2
+Open Template Hub - Mail Server Template v3
 </h1>
 
 [![License](https://img.shields.io/github/license/open-template-hub/mail-server-template?color=43b043&style=for-the-badge)](LICENSE)
@@ -14,9 +14,8 @@ Open Template Hub - Mail Server Template v2
 [![LastCommit](https://img.shields.io/github/last-commit/open-template-hub/mail-server-template?color=43b043&style=for-the-badge)](https://github.com/open-template-hub/mail-server-template/commits/master)
 [![Release](https://img.shields.io/github/release/open-template-hub/mail-server-template?include_prereleases&color=43b043&style=for-the-badge)](https://github.com/open-template-hub/mail-server-template/releases)
 [![SonarCloud](https://img.shields.io/sonar/quality_gate/open-template-hub_mail-server-template?server=https%3A%2F%2Fsonarcloud.io&label=Sonar%20Cloud&style=for-the-badge&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=open-template-hub_mail-server-template)
-[![BTC](https://img.shields.io/badge/Donate-BTC-ORANGE?color=F5922F&style=for-the-badge&logo=bitcoin)](https://commerce.coinbase.com/checkout/8313af5f-de48-498d-b2cb-d98819ca7d5e)
 
-Mail Server Template supporting both regular public and private mail send processes in Message Queue Architecture
+Mail Server Template is a generic open-source mail server that has a simple yet powerful design to connect your business with third-party email service providers (like Gmail, Yahoo, or Outlook).
 
 ## Ways to Begin
 

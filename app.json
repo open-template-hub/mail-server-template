@@ -1,0 +1,27 @@
+{
+  "name": "mail-server-template",
+  "description": "Mail Server Template is a generic open-source mail server that has a simple yet powerful design to connect your business with third-party email service providers (like Gmail, Yahoo, or Outlook).",
+  "website": "https://opentemplatehub.com/product/server/mail-server-template",
+  "repository": "https://github.com/open-template-hub/mail-server-template",
+  "logo": "https://raw.githubusercontent.com/open-template-hub/open-template-hub.github.io/master/assets/logo/server/mail-server-logo.png",
+  "keywords": [
+    "nodejs",
+    "template",
+    "mail",
+    "mail send",
+    "mq",
+    "server mail",
+    "mail server",
+    "message queue",
+    "rabbitmq",
+    "mail message queue",
+    "mail sender",
+    "rest",
+    "node",
+    "nodejs",
+    "typescript",
+    "template",
+    "server template",
+    "open template hub"
+  ]
+}
