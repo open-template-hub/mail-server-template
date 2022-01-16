@@ -8,9 +8,13 @@ import {
   ContactUsMailActionParams,
   ForgetPasswordMailActionParams,
   MailUtil,
+  MongoDbProvider,
 } from '@open-template-hub/common';
 import { MailTemplateFilePath } from '../../app.constant';
 import { Environment } from '../../environment';
+import { Context } from '@open-template-hub/common';
+import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
+import { PreconfiguredMailRepository } from '../repository/preconfigured-mail.repository';
 
 export class MailController {
   constructor(
@@ -20,58 +24,55 @@ export class MailController {
   ) {}
 
   /**
-   * send contact us email
-   * @param params ContactUsMailActionParams
+   * send mail
+   * @param context Context
+   * @param key string
+   * @param languageCode string
+   * @param to string
+   * @param params ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams
    */
-  sendContactUsMail = async (params: ContactUsMailActionParams) => {
-    var templateParams = this.objectToMap(params);
-    var subject = 'New Interaction';
+  sendMail = async (
+    mongodb_provider: MongoDbProvider, 
+    key: string,
+    languageCode: string,
+    to: string,
+    params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams
+    ) => {
+      var templateParams = this.objectToMap( params );
 
-    var body = this.builderUtil.buildTemplateFromFile(
-      MailTemplateFilePath.ContactUs,
-      templateParams
-    );
+      var preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, key, languageCode );
 
-    await this.mailUtil.send(
-      this.environment.args().mailArgs?.mailUsername as string,
-      subject,
-      body
-    );
-  };
+      const mailBody = this.builderUtil.buildTemplateFromString( preconfiguredMail.body, templateParams );
 
-  /**
-   * send forget password email
-   * @param params ForgetPasswordMailActionParams
-   */
-  sendForgetPasswordMail = async (params: ForgetPasswordMailActionParams) => {
-    var templateParams = this.objectToMap(params);
-    var subject = 'Forget Password';
+      this.mailUtil.send(
+        to,
+        preconfiguredMail.subject,
+        mailBody
+      )
+    };
 
-    var body = this.builderUtil.buildTemplateFromFile(
-      MailTemplateFilePath.ForgetPassword,
-      templateParams
-    );
-
-    await this.mailUtil.send(params.email, subject, body);
-  };
-
-  /**
-   * send verify account email
-   * @param params AccountVerificationMailActionParams
-   */
-  sendVerifyAccountMail = async (
-    params: AccountVerificationMailActionParams
+  createPreconfiguredMail = async (
+      context: Context,
+      preconfiguredMail: PreconfiguredMail
   ) => {
-    var templateParams = this.objectToMap(params);
-    var subject = 'Verify Account';
+    const conn = context.mongodb_provider.getConnection()
+    const preconfiguredMailRepository = await new PreconfiguredMailRepository().initialize(conn);
+    return await preconfiguredMailRepository.createPreconfiguredMail(preconfiguredMail)
+  }
 
-    var body = this.builderUtil.buildTemplateFromFile(
-      MailTemplateFilePath.VerifyAccount,
-      templateParams
-    );
+  private getPreconfiguredMail = async (
+    provider: MongoDbProvider,
+    mailKey: string,
+    languageCode: string
+  ): Promise<PreconfiguredMail> => {
+    const conn = provider.getConnection();
 
-    await this.mailUtil.send(params.email, subject, body);
-  };
+    const preconfiguredMailRepository = await new PreconfiguredMailRepository().initialize( conn );
+
+    const preconfiguredMail: PreconfiguredMail = await preconfiguredMailRepository.getPreconfiguredMail( mailKey, languageCode );
+
+    return preconfiguredMail;
+  }
 
   private objectToMap = (obj: object) => {
     var m = new Map<string, string>();

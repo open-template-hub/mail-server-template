@@ -1,10 +1,14 @@
+import { EnvArgs, MongoDbProvider } from '@open-template-hub/common';
 import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
+import { Environment } from '../../environment';
 import { MailController } from '../controller/mail.controller';
 
 export class MailQueueConsumer {
   constructor(
     private channel: any,
-    private mailController = new MailController()
+    private mongodbProvider: MongoDbProvider,
+    private environmentArgs: EnvArgs,
+    private mailController = new MailController(),
   ) {}
 
   onMessage = async (msg: any) => {
@@ -17,6 +21,7 @@ export class MailQueueConsumer {
       // Decide requeue in the error handling
       let requeue = false;
 
+      /*
       if (message.contactUs) {
         var contactUsHook = async () => {
           await this.mailController.sendContactUsMail(message.contactUs.params);
@@ -42,6 +47,44 @@ export class MailQueueConsumer {
       } else {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
+      }*/
+
+      let key: string | undefined;
+      let languageCode: string | undefined;
+      let to: string | undefined;
+      let params: any | undefined;
+      if ( message.contactUs ) {
+        key = "ContactUs";
+        languageCode = "en"; // TODO Retrieve from message
+        to = this.environmentArgs.mailArgs?.mailUsername as string;
+        params = message.contactUs.params
+      } else if ( message.forgetPassword ) {
+        key = "ForgetPassword";
+        languageCode = "en"; // TODO Retrieve from message
+        to = message.forgetPassword.params.email;
+        params = message.forgetPassword.params
+      } else if ( message.verifyAccount ) {
+        key = "VerifyAccount";
+        languageCode = "en";
+        to = message.verifyAccount.params.email;
+        params = message.verifyAccount.params;
+      } else {
+        console.log('Message will be rejected: ', msgObj);
+        this.channel.reject(msg, false);
+      }
+
+      if( key && languageCode && to && params ) {
+        let hook = async() => {
+          await this.mailController.sendMail(
+            this.mongodbProvider,
+            key as string,
+            languageCode as string,
+            to as string,
+            params
+          );
+        };
+
+        await this.operate(msg, msgObj, requeue, hook);        
       }
     }
   };

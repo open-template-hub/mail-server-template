@@ -1,4 +1,5 @@
 import {
+  DbArgs,
   EnvArgs,
   MailArgs,
   MqArgs,
@@ -14,6 +15,13 @@ export class Environment {
       mailUsername: process.env.MAIL_USERNAME,
     } as MailArgs;
 
+    const dbArgs = {
+      mongoDbConnectionLimit: process.env.MONGODB_CONNECTION_LIMIT,
+      mongoDbUri: process.env.MONGODB_URI,
+      postgreSqlConnectionLimit: process.env.POSTGRESQL_CONNECTION_LIMIT,
+      postgreSqlUri: process.env.DATABASE_URL,
+    } as DbArgs;
+
     const mqArgs = {
       messageQueueConnectionUrl: process.env.CLOUDAMQP_URL,
       mailServerMessageQueueChannel: process.env.MAIL_SERVER_QUEUE_CHANNEL,
@@ -28,6 +36,7 @@ export class Environment {
 
     this._args = {
       mailArgs,
+      dbArgs,
       mqArgs,
       tokenArgs,
     } as EnvArgs;
