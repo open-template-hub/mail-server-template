@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export class PreconfiguredMailDataModel {
-  private readonly collectionName: string = 'mail-template';
+  private readonly collectionName: string = 'preconfigured-mail';
   private productSchema: mongoose.Schema;
 
   constructor() {

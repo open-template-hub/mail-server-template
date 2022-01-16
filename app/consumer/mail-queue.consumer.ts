@@ -61,12 +61,12 @@ export class MailQueueConsumer {
       } else if ( message.forgetPassword ) {
         key = "ForgetPassword";
         languageCode = "en"; // TODO Retrieve from message
-        to = params.email;
+        to = message.forgetPassword.params.email;
         params = message.forgetPassword.params
       } else if ( message.verifyAccount ) {
         key = "VerifyAccount";
         languageCode = "en";
-        to = params.email;
+        to = message.verifyAccount.params.email;
         params = message.verifyAccount.params;
       } else {
         console.log('Message will be rejected: ', msgObj);
