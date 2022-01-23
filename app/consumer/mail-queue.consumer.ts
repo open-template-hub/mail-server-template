@@ -1,6 +1,5 @@
 import { EnvArgs, MongoDbProvider } from '@open-template-hub/common';
-import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
-import { Environment } from '../../environment';
+import { AccountVerificationMailActionParams, ContactUsMailActionParams, ForgetPasswordMailActionParams, MailActionType } from '@open-template-hub/common/lib/action/mail.action';
 import { MailController } from '../controller/mail.controller';
 
 export class MailQueueConsumer {
@@ -21,64 +20,33 @@ export class MailQueueConsumer {
       // Decide requeue in the error handling
       let requeue = false;
 
-      /*
-      if (message.contactUs) {
-        var contactUsHook = async () => {
-          await this.mailController.sendContactUsMail(message.contactUs.params);
-        };
-
-        await this.operate(msg, msgObj, requeue, contactUsHook);
-      } else if (message.forgetPassword) {
-        var forgetPasswordHook = async () => {
-          await this.mailController.sendForgetPasswordMail(
-            message.forgetPassword.params
-          );
-        };
-
-        await this.operate(msg, msgObj, requeue, forgetPasswordHook);
-      } else if (message.verifyAccount) {
-        var verifyAccountHook = async () => {
-          await this.mailController.sendVerifyAccountMail(
-            message.verifyAccount.params
-          );
-        };
-
-        await this.operate(msg, msgObj, requeue, verifyAccountHook);
-      } else {
-        console.log('Message will be rejected: ', msgObj);
-        this.channel.reject(msg, false);
-      }*/
-
       let key: string | undefined;
-      let languageCode: string | undefined;
       let to: string | undefined;
       let params: any | undefined;
-      if ( message.contactUs ) {
+      
+      if ( message.mailType.contactUs ) {
         key = "ContactUs";
-        languageCode = "en"; // TODO Retrieve from message
         to = this.environmentArgs.mailArgs?.mailUsername as string;
-        params = message.contactUs.params
-      } else if ( message.forgetPassword ) {
+        params = message.mailType.contactUs.params as ContactUsMailActionParams
+      } else if ( message.mailType.forgetPassword ) {
         key = "ForgetPassword";
-        languageCode = "en"; // TODO Retrieve from message
-        to = message.forgetPassword.params.email;
-        params = message.forgetPassword.params
-      } else if ( message.verifyAccount ) {
+        to = message.mailType.forgetPassword.params.email;
+        params = message.mailType.forgetPassword.params as ForgetPasswordMailActionParams
+      } else if ( message.mailType.verifyAccount ) {
         key = "VerifyAccount";
-        languageCode = "en";
-        to = message.verifyAccount.params.email;
-        params = message.verifyAccount.params;
+        to = message.mailType.verifyAccount.params.email;
+        params = message.mailType.verifyAccount.params as AccountVerificationMailActionParams ;
       } else {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
       }
 
-      if( key && languageCode && to && params ) {
+      if( key && to && params ) {
         let hook = async() => {
           await this.mailController.sendMail(
             this.mongodbProvider,
             key as string,
-            languageCode as string,
+            message.language as string,
             to as string,
             params
           );
