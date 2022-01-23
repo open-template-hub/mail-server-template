@@ -1,5 +1,5 @@
 import { EnvArgs, MongoDbProvider } from '@open-template-hub/common';
-import { AccountVerificationMailActionParams, ContactUsMailActionParams, ForgetPasswordMailActionParams, MailActionType } from '@open-template-hub/common/lib/action/mail.action';
+import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
 import { MailController } from '../controller/mail.controller';
 
 export class MailQueueConsumer {
