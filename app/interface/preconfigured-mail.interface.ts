@@ -1,6 +1,9 @@
 export interface PreconfiguredMail {
   key: string;
-  languageCode: string;
-  subject: string;
-  body: string;
+  from: string;
+  mails: {
+    language: string;
+    subject: string;
+    body: string;
+  }[];
 }
