@@ -27,15 +27,15 @@ export class MailQueueConsumer {
       if ( message.mailType.contactUs ) {
         key = "ContactUs";
         to = this.environmentArgs.mailArgs?.mailUsername as string;
-        params = message.mailType.contactUs.params as ContactUsMailActionParams
+        params = message.mailType.contactUs.params
       } else if ( message.mailType.forgetPassword ) {
         key = "ForgetPassword";
         to = message.mailType.forgetPassword.params.email;
-        params = message.mailType.forgetPassword.params as ForgetPasswordMailActionParams
+        params = message.mailType.forgetPassword.params
       } else if ( message.mailType.verifyAccount ) {
         key = "VerifyAccount";
         to = message.mailType.verifyAccount.params.email;
-        params = message.mailType.verifyAccount.params as AccountVerificationMailActionParams ;
+        params = message.mailType.verifyAccount.params
       } else {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
