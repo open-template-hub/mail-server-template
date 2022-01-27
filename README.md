@@ -67,11 +67,6 @@ CLOUDAMQP_URL={MQ Connection Url}
 MAIL_SERVER_QUEUE_CHANNEL=oth_mail_queue
 ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue
     
-MAIL_HOST={Mail Host}
-MAIL_PORT={Mail Port}
-MAIL_USERNAME={Mail Username}
-MAIL_PASSWORD={Mail Password}
-    
 ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 ```

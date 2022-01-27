@@ -16,11 +16,6 @@ if [ ! -f .env ]; then
     echo "MAIL_SERVER_QUEUE_CHANNEL=oth_mail_queue"
     echo "ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue"
 
-    echo "MAIL_HOST={Mail Host}"
-    echo "MAIL_PORT={Mail Port}"
-    echo "MAIL_USERNAME={Mail Username}"
-    echo "MAIL_PASSWORD={Mail Password}"
-
     echo "ACCESS_TOKEN_SECRET={Access Token Secret}"
     echo "RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}"
   } >>.env
