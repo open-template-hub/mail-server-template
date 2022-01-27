@@ -26,7 +26,8 @@ export class MailQueueConsumer {
       
       if ( message.mailType.contactUs ) {
         key = "ContactUs";
-        to = this.environmentArgs.mailArgs?.mailUsername as string;
+        // TODO: get this value from message
+        //  to = this.environmentArgs.mailArgs?.mailUsername as string;
         params = message.mailType.contactUs.params
       } else if ( message.mailType.forgetPassword ) {
         key = "ForgetPassword";
@@ -52,7 +53,7 @@ export class MailQueueConsumer {
           );
         };
 
-        await this.operate(msg, msgObj, requeue, hook);        
+        await this.operate(msg, msgObj, requeue, hook);
       }
     }
   };

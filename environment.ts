@@ -1,25 +1,15 @@
 import {
   DbArgs,
   EnvArgs,
-  MailArgs,
   MqArgs,
   TokenArgs,
 } from '@open-template-hub/common';
 
 export class Environment {
   constructor(private _args: EnvArgs = {} as EnvArgs) {
-    const mailArgs = {
-      mailHost: process.env.MAIL_HOST,
-      mailPassword: process.env.MAIL_PASSWORD,
-      mailPort: process.env.MAIL_PORT,
-      mailUsername: process.env.MAIL_USERNAME,
-    } as MailArgs;
-
     const dbArgs = {
       mongoDbConnectionLimit: process.env.MONGODB_CONNECTION_LIMIT,
-      mongoDbUri: process.env.MONGODB_URI,
-      postgreSqlConnectionLimit: process.env.POSTGRESQL_CONNECTION_LIMIT,
-      postgreSqlUri: process.env.DATABASE_URL,
+      mongoDbUri: process.env.MONGODB_URI
     } as DbArgs;
 
     const mqArgs = {
@@ -35,7 +25,6 @@ export class Environment {
     } as TokenArgs;
 
     this._args = {
-      mailArgs,
       dbArgs,
       mqArgs,
       tokenArgs,
