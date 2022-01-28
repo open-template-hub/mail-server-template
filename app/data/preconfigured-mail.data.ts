@@ -11,6 +11,7 @@ export class PreconfiguredMailDataModel {
     const schema: mongoose.SchemaDefinition = {
       key: { type: String, unique: true, required: true, dropDups: true },
       from: { type: String, required: true },
+      to: { type: String, required: false },
       mails: { type: Array, required: true }
     };
 
