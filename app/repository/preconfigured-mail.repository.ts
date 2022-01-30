@@ -24,7 +24,7 @@ export class PreconfiguredMailRepository {
     try {
       return await this.dataModel.findOne( 
         { key },
-        { mails: { $elemMatch: { language: languageCode } }, from: 1 } 
+        { mails: { $elemMatch: { language: languageCode } }, from: 1, to: 1 } 
       );
     } catch ( error ) {
       console.error( '> getPreconfiguredMessage error: ', error );

@@ -10,7 +10,6 @@ import {
   MailUtil,
   MongoDbProvider,
 } from '@open-template-hub/common';
-import { Environment } from '../../environment';
 import { Context } from '@open-template-hub/common';
 import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
 import { PreconfiguredMailRepository } from '../repository/preconfigured-mail.repository';
@@ -35,12 +34,22 @@ export class MailController {
   sendMail = async (
     mongodb_provider: MongoDbProvider,
     mailKey: string,
-    languageCode: string,
-    to: string,
+    languageCode: string | undefined,
+    to: string | undefined,
     params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams
     ) => {
+      languageCode = languageCode ?? process.env.DEFAULT_LANGUAGE ?? 'en';
 
       var preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode );
+
+      // overwrite 'to' if preconfiguredMail model contains
+      if( preconfiguredMail.to ) {
+        to = preconfiguredMail.to
+      }
+
+      if ( !to ) {
+        throw new Error( "'To' not found")
+      }
 
       const mailConfig = await this.getMailConfig(
         mongodb_provider,
@@ -49,7 +58,7 @@ export class MailController {
 
       const username = mailConfig.username;
       const password = mailConfig.password;
-      if( username === null || password === null ) {
+      if( !username || !password ) {
         throw new Error('Host or Port can not be found');
       }
 
@@ -60,12 +69,12 @@ export class MailController {
 
       const host = serviceProvider.payload.host
       const port = serviceProvider.payload.port
-      if( host === null ) {
+      if( !host ) {
         throw new Error('Host can not be found');
       }
 
       var templateParams = this.objectToMap( params );
-      const mail = preconfiguredMail.mails[0]
+      const mail = preconfiguredMail.mails[0] 
       const mailBody = this.builderUtil.buildTemplateFromString( mail.body, templateParams );
 
       let mailUtil = new MailUtil(
@@ -101,7 +110,7 @@ export class MailController {
 
     let serviceProvider: any = await serviceProviderRepository.getServiceProviderByKey( key );
 
-    if( serviceProvider === null ) {
+    if( !serviceProvider ) {
       throw new Error( 'Service can not be found' );
     }
 
@@ -118,7 +127,7 @@ export class MailController {
 
     let mailConfig: any = await mailConfigRepository.getMailConfigByUsername( username );
 
-    if( mailConfig === null ) {
+    if( !mailConfig ) {
       throw new Error( 'Service can not be found' );
     }
 
@@ -136,7 +145,7 @@ export class MailController {
 
     const preconfiguredMail: PreconfiguredMail = await preconfiguredMailRepository.getPreconfiguredMail( mailKey, languageCode );
 
-    if( preconfiguredMail === null ) {
+    if( !preconfiguredMail || preconfiguredMail?.mails?.length < 1 ) {
       throw new Error( 'Preconfigured mail not found' );
     }
 

@@ -69,6 +69,48 @@ ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue
     
 ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
+
+DEFAULT_LANGUAGE={LANGUAGE CODE}
+```
+
+### Example Preconfigured Mail:
+
+```json
+{
+  "key" : "verifyAccount",
+  "from" : "info@opentemplatehub.com",
+  "mails" : [ 
+      {
+        "language" : "en",
+        "subject" : "Verify Account",
+        "body": "{Verify Account Mail Body}"
+      }
+  ]
+}
+```
+
+If you provide 'to' value to this configuration, POST /sms/me 'to' value will be overwritten.
+
+### Example PRIVATEEMAIL Service Configuration:
+
+```json
+{
+    "key" : "PRIVATEEMAIL",
+    "payload" : {
+        "host" : "mail.privateemail.com",
+        "port" : "465"
+    }
+}
+```
+
+### Example PRIVATEEMAIL Mail Configuration:
+
+```json
+{
+    "provider" : "PRIVATEEMAIL",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
 ```
 
 ## Contributors

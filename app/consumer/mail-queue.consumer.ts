@@ -24,22 +24,14 @@ export class MailQueueConsumer {
       let to: string | undefined;
       let params: any | undefined;
       
-      if ( message.mailType.contactUs ) {
-        key = "ContactUs";
-        // TODO: get this value from message
-        //  to = this.environmentArgs.mailArgs?.mailUsername as string;
-        params = message.mailType.contactUs.params
-      } else if ( message.mailType.forgetPassword ) {
-        key = "ForgetPassword";
-        to = message.mailType.forgetPassword.params.email;
-        params = message.mailType.forgetPassword.params
-      } else if ( message.mailType.verifyAccount ) {
-        key = "VerifyAccount";
-        to = message.mailType.verifyAccount.params.email;
-        params = message.mailType.verifyAccount.params
-      } else {
+      if( Object.keys(message.mailType)?.length === 0 ) {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
+        return
+      } else {
+        key = Object.keys(message.mailType)[0];
+        params = (message.mailType as any)[key].params;
+        to = (message.mailType as any)[key].params.email;
       }
 
       if( key && to && params ) {
@@ -47,13 +39,13 @@ export class MailQueueConsumer {
           await this.mailController.sendMail(
             this.mongodbProvider,
             key as string,
-            message.language as string,
+            message.language,
             to as string,
             params
           );
         };
 
-        await this.operate(msg, msgObj, requeue, hook);
+        await this.operate(msg, msgObj, requeue, hook);        
       }
     }
   };
