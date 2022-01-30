@@ -47,7 +47,7 @@ export class MailController {
         to = preconfiguredMail.to
       }
 
-      if ( to === undefined ) {
+      if ( !to ) {
         throw new Error( "'To' not found")
       }
 
@@ -58,7 +58,7 @@ export class MailController {
 
       const username = mailConfig.username;
       const password = mailConfig.password;
-      if( username === undefined || password === undefined ) {
+      if( !username || !password ) {
         throw new Error('Host or Port can not be found');
       }
 
@@ -69,7 +69,7 @@ export class MailController {
 
       const host = serviceProvider.payload.host
       const port = serviceProvider.payload.port
-      if( host === undefined ) {
+      if( !host ) {
         throw new Error('Host can not be found');
       }
 
@@ -85,7 +85,7 @@ export class MailController {
       );
 
       mailUtil.send(
-        to as string,
+        to,
         mail.subject,
         mailBody
       )
@@ -110,7 +110,7 @@ export class MailController {
 
     let serviceProvider: any = await serviceProviderRepository.getServiceProviderByKey( key );
 
-    if( serviceProvider === undefined ) {
+    if( !serviceProvider ) {
       throw new Error( 'Service can not be found' );
     }
 
@@ -127,7 +127,7 @@ export class MailController {
 
     let mailConfig: any = await mailConfigRepository.getMailConfigByUsername( username );
 
-    if( mailConfig === null ) {
+    if( !mailConfig ) {
       throw new Error( 'Service can not be found' );
     }
 
@@ -145,7 +145,7 @@ export class MailController {
 
     const preconfiguredMail: PreconfiguredMail = await preconfiguredMailRepository.getPreconfiguredMail( mailKey, languageCode );
 
-    if( preconfiguredMail === null || preconfiguredMail?.mails?.length < 1 ) {
+    if( !preconfiguredMail || preconfiguredMail?.mails?.length < 1 ) {
       throw new Error( 'Preconfigured mail not found' );
     }
 
