@@ -93,7 +93,7 @@ DEFAULT_LANGUAGE={LANGUAGE CODE}
 
 If you provide 'to' value to this configuration, POST /sms/me 'to' value will be overwritten.
 
-## Mail Service Configurations
+### Mail Service Configurations
 This is the list of supported mail providers. Configuring only what you need to use is enough.
 
 1. [Privateemail](#1-privateemail)
