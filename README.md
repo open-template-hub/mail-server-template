@@ -73,6 +73,8 @@ RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 DEFAULT_LANGUAGE={LANGUAGE CODE}
 ```
 
+## Configurations
+
 ### Example Preconfigured Mail:
 
 ```json
@@ -91,7 +93,17 @@ DEFAULT_LANGUAGE={LANGUAGE CODE}
 
 If you provide 'to' value to this configuration, POST /sms/me 'to' value will be overwritten.
 
-### Example PRIVATEEMAIL Service Configuration:
+## Mail Service Configurations
+This is the list of supported mail providers. Configuring only what you need to use is enough.
+
+1. [Privateemail](#1-privateemail)
+2. [Gmail](#2-gmail)
+3. [Outlook](#3-outlook)
+4. [Yahoo](#4-yahoo)
+
+### 1. PRIVATEEMAIL
+
+#### Service Configuration
 
 ```json
 {
@@ -103,11 +115,83 @@ If you provide 'to' value to this configuration, POST /sms/me 'to' value will be
 }
 ```
 
-### Example PRIVATEEMAIL Mail Configuration:
+#### Mail Configuration
 
 ```json
 {
     "provider" : "PRIVATEEMAIL",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### 2. GMAIL
+
+#### Service Configuration
+
+```json
+{
+    "key" : "GMAIL",
+    "payload" : {
+        "host" : "{ TODO }",
+        "port" : "{ TODO }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "GMAIL",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### 3. OUTLOOK
+
+#### Service Configuration
+
+```json
+{
+    "key" : "OUTLOOK",
+    "payload" : {
+        "host" : "{ TODO }",
+        "port" : "{ TODO }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "OUTLOOK",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### 4. YAHOO
+
+#### Service Configuration
+
+```json
+{
+    "key" : "YAHOO",
+    "payload" : {
+        "host" : "{ TODO }",
+        "port" : "{ TODO }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "YAHOO",
     "username" : "{ Username }",
     "password" : "{ Password }"
 }
