@@ -96,36 +96,11 @@ If you provide 'to' value to this configuration, POST /sms/me 'to' value will be
 ### Mail Service Configurations
 This is the list of supported mail providers. Configuring only what you need to use is enough.
 
-1. [Privateemail](#1-privateemail)
-2. [Gmail](#2-gmail)
-3. [Outlook](#3-outlook)
-4. [Yahoo](#4-yahoo)
+1. [Gmail](#2-gmail)
+2. [Outlook](#3-outlook)
+3. [Yahoo](#4-yahoo)
 
-### 1. PRIVATEEMAIL
-
-#### Service Configuration
-
-```json
-{
-    "key" : "PRIVATEEMAIL",
-    "payload" : {
-        "host" : "mail.privateemail.com",
-        "port" : "465"
-    }
-}
-```
-
-#### Mail Configuration
-
-```json
-{
-    "provider" : "PRIVATEEMAIL",
-    "username" : "{ Username }",
-    "password" : "{ Password }"
-}
-```
-
-### 2. GMAIL
+### 1. GMAIL
 
 #### Service Configuration
 
@@ -149,7 +124,7 @@ This is the list of supported mail providers. Configuring only what you need to 
 }
 ```
 
-### 3. OUTLOOK
+### 2. OUTLOOK
 
 #### Service Configuration
 
@@ -157,8 +132,8 @@ This is the list of supported mail providers. Configuring only what you need to 
 {
     "key" : "OUTLOOK",
     "payload" : {
-        "host" : "{ TODO }",
-        "port" : "{ TODO }"
+        "host" : "{ smtp.office365.com }",
+        "port" : "{ 587 }"
     }
 }
 ``` 
@@ -173,7 +148,7 @@ This is the list of supported mail providers. Configuring only what you need to 
 }
 ```
 
-### 4. YAHOO
+### 3. YAHOO
 
 #### Service Configuration
 
@@ -192,6 +167,31 @@ This is the list of supported mail providers. Configuring only what you need to 
 ```json
 {
     "provider" : "YAHOO",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### Custom Mail Service Configurations
+For the custom mail service configurations, you can build similar configuration below.
+
+#### Service Configuration
+
+```json
+{
+    "key" : "{ Provider Key }",
+    "payload" : {
+        "host" : "{ smtp.host }",
+        "port" : "{ port }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "{ Provider Key }",
     "username" : "{ Username }",
     "password" : "{ Password }"
 }

@@ -1,4 +1,3 @@
-import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import { PreconfiguredMailDataModel } from '../data/preconfigured-mail.data';
 import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
 
