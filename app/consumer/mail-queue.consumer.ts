@@ -23,18 +23,18 @@ export class MailQueueConsumer {
       let key: string | undefined;
       let to: string | undefined;
       let params: any | undefined;
-      
-      if( Object.keys(message.mailType)?.length === 0 ) {
+
+      if( message && message?.mailType && Object.keys( message.mailType )?.length > 0 ) {
+        key = Object.keys( message.mailType )[0];
+        params = (message.mailType as any)[key].params;
+        to = (message.mailType as any)[key].params.email;
+      } else {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
         return
-      } else {
-        key = Object.keys(message.mailType)[0];
-        params = (message.mailType as any)[key].params;
-        to = (message.mailType as any)[key].params.email;
       }
 
-      if( key && to && params ) {
+      if( key && params ) {
         let hook = async() => {
           await this.mailController.sendMail(
             this.mongodbProvider,

@@ -73,6 +73,8 @@ RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
 DEFAULT_LANGUAGE={LANGUAGE CODE}
 ```
 
+## Configurations
+
 ### Example Preconfigured Mail:
 
 ```json
@@ -91,23 +93,105 @@ DEFAULT_LANGUAGE={LANGUAGE CODE}
 
 If you provide 'to' value to this configuration, POST /sms/me 'to' value will be overwritten.
 
-### Example PRIVATEEMAIL Service Configuration:
+### Mail Service Configurations
+This is the list of supported mail providers. Configuring only what you need to use is enough.
+
+1. [Gmail](#2-gmail)
+2. [Outlook](#3-outlook)
+3. [Yahoo](#4-yahoo)
+
+### 1. GMAIL
+
+#### Service Configuration
 
 ```json
 {
-    "key" : "PRIVATEEMAIL",
+    "key" : "GMAIL",
     "payload" : {
-        "host" : "mail.privateemail.com",
-        "port" : "465"
+        "host" : "{ smtp.gmail.com }",
+        "port" : "{ 465 }"
     }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "GMAIL",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
 }
 ```
 
-### Example PRIVATEEMAIL Mail Configuration:
+### 2. OUTLOOK
+
+#### Service Configuration
 
 ```json
 {
-    "provider" : "PRIVATEEMAIL",
+    "key" : "OUTLOOK",
+    "payload" : {
+        "host" : "{ smtp.office365.com }",
+        "port" : "{ 587 }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "OUTLOOK",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### 3. YAHOO
+
+#### Service Configuration
+
+```json
+{
+    "key" : "YAHOO",
+    "payload" : {
+        "host" : "{ smtp.mail.yahoo.com }",
+        "port" : "{ 465 }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "YAHOO",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### Custom Mail Service Configurations
+For the custom mail service configurations, you can build similar configuration below.
+
+#### Service Configuration
+
+```json
+{
+    "key" : "{ Provider Key }",
+    "payload" : {
+        "host" : "{ smtp.host }",
+        "port" : "{ port }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "{ Provider Key }",
     "username" : "{ Username }",
     "password" : "{ Password }"
 }
