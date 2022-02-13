@@ -38,9 +38,9 @@ export class MailController {
     to: string | undefined,
     params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams
     ) => {
-      languageCode = languageCode ?? process.env.DEFAULT_LANGUAGE ?? 'en';
+      const defaultLanguageCode = process.env.DEFAULT_LANGUAGE ?? 'en';
 
-      var preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode );
+      var preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
 
       // overwrite 'to' if preconfiguredMail model contains
       if( preconfiguredMail.to ) {
@@ -128,7 +128,7 @@ export class MailController {
     let mailConfig: any = await mailConfigRepository.getMailConfigByUsername( username );
 
     if( !mailConfig ) {
-      throw new Error( 'Service can not be found' );
+      throw new Error( 'MailConfig can not be found' );
     }
 
     return mailConfig;
@@ -137,19 +137,20 @@ export class MailController {
   private getPreconfiguredMail = async (
     provider: MongoDbProvider,
     mailKey: string,
-    languageCode: string
+    languageCode: string | undefined,
+    defaultLanguageCode: string
   ): Promise<PreconfiguredMail> => {
     const conn = provider.getConnection();
 
     const preconfiguredMailRepository = await new PreconfiguredMailRepository().initialize( conn );
 
-    const preconfiguredMail: PreconfiguredMail = await preconfiguredMailRepository.getPreconfiguredMail( mailKey, languageCode );
+    const preconfiguredMail: PreconfiguredMail[] = await preconfiguredMailRepository.getPreconfiguredMail( mailKey, languageCode, defaultLanguageCode );
 
-    if( !preconfiguredMail || preconfiguredMail?.mails?.length < 1 ) {
+    if( preconfiguredMail.length === 0 || preconfiguredMail[0].mails?.length < 1 ) {
       throw new Error( 'Preconfigured mail not found' );
     }
 
-    return preconfiguredMail;
+    return preconfiguredMail[0];
   }
 
   private objectToMap = (obj: object) => {

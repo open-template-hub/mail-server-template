@@ -133,8 +133,8 @@ This is the list of supported mail providers. Configuring only what you need to 
 {
     "key" : "GMAIL",
     "payload" : {
-        "host" : "{ TODO }",
-        "port" : "{ TODO }"
+        "host" : "{ smtp.gmail.com }",
+        "port" : "{ 465 }"
     }
 }
 ``` 
@@ -181,8 +181,8 @@ This is the list of supported mail providers. Configuring only what you need to 
 {
     "key" : "YAHOO",
     "payload" : {
-        "host" : "{ TODO }",
-        "port" : "{ TODO }"
+        "host" : "{ smtp.mail.yahoo.com }",
+        "port" : "{ 465 }"
     }
 }
 ``` 

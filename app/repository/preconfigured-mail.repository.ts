@@ -1,3 +1,4 @@
+import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import { PreconfiguredMailDataModel } from '../data/preconfigured-mail.data';
 import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
 
@@ -20,12 +21,43 @@ export class PreconfiguredMailRepository {
     }
   };
 
-  getPreconfiguredMail = async ( key: string, languageCode: string ) => {
+  getPreconfiguredMail = async ( key: string, languageCode: string | undefined, defaultLanguageCode: string ) => {
     try {
-      return await this.dataModel.findOne( 
-        { key },
-        { mails: { $elemMatch: { language: languageCode } }, from: 1, to: 1 } 
-      );
+      let dataModel = await this.dataModel.aggregate([
+        { $match: { key } },
+        { $project: {
+          from: 1,
+          to: 1,
+          mails: {
+            $filter: {
+              input: "$mails",
+              as: "mail",
+              cond: { 
+                $or: [
+                  { $eq: [ "$$mail.language", languageCode ] },
+                  { $eq: [ "$$mail.language", defaultLanguageCode ] } 
+                ], 
+              }
+            }
+          }
+        } }
+      ] );
+
+      let newMailsArray: string[] = [];
+      if( dataModel.length > 0  && dataModel[0].mails?.length > 1 ) {
+        for( const mail of dataModel[0].mails ) {
+          if ( mail.language === languageCode ) {
+            newMailsArray.push( mail );
+          }
+        }
+
+        if( newMailsArray.length > 0 ) {
+          dataModel[0].mails = newMailsArray
+        }
+      }
+
+      return dataModel
+
     } catch ( error ) {
       console.error( '> getPreconfiguredMessage error: ', error );
       throw error;
