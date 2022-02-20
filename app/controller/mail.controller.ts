@@ -81,6 +81,7 @@ export class MailController {
         username,
         password,
         host,
+        serviceProvider.payload.sslV3 ?? false,
         port
       );
 

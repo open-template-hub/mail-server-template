@@ -132,8 +132,9 @@ This is the list of supported mail providers. Configuring only what you need to 
 {
     "key" : "OUTLOOK",
     "payload" : {
-        "host" : "{ smtp.office365.com }",
-        "port" : "{ 587 }"
+        "host" : "{ smtp-mail.outlook.com }",
+        "port" : "{ 587 }",
+        "sslV3": true
     }
 }
 ``` 
