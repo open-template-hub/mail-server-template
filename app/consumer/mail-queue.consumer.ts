@@ -7,7 +7,7 @@ export class MailQueueConsumer {
     private channel: any,
     private mongodbProvider: MongoDbProvider,
     private environmentArgs: EnvArgs,
-    private mailController = new MailController(),
+    private mailController = new MailController()
   ) {}
 
   onMessage = async (msg: any) => {
@@ -24,18 +24,22 @@ export class MailQueueConsumer {
       let to: string | undefined;
       let params: any | undefined;
 
-      if( message && message?.mailType && Object.keys( message.mailType )?.length > 0 ) {
-        key = Object.keys( message.mailType )[0];
-        params = (message.mailType as any)[key].params;
-        to = (message.mailType as any)[key].params.email;
+      if (
+        message &&
+        message?.mailType &&
+        Object.keys(message.mailType)?.length > 0
+      ) {
+        key = Object.keys(message.mailType)[0];
+        params = (message.mailType as any)[key]?.params;
+        to = params?.email;
       } else {
         console.log('Message will be rejected: ', msgObj);
         this.channel.reject(msg, false);
-        return
+        return;
       }
 
-      if( key && params ) {
-        let hook = async() => {
+      if (key && params) {
+        let hook = async () => {
           await this.mailController.sendMail(
             this.mongodbProvider,
             key as string,
@@ -45,7 +49,11 @@ export class MailQueueConsumer {
           );
         };
 
-        await this.operate(msg, msgObj, requeue, hook);        
+        await this.operate(msg, msgObj, requeue, hook);
+      } else {
+        console.log('Message will be rejected: ', msgObj);
+        this.channel.reject(msg, false);
+        return;
       }
     }
   };
