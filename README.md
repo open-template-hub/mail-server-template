@@ -67,13 +67,135 @@ CLOUDAMQP_URL={MQ Connection Url}
 MAIL_SERVER_QUEUE_CHANNEL=oth_mail_queue
 ORCHESTRATION_SERVER_QUEUE_CHANNEL=oth_orchestration_queue
     
-MAIL_HOST={Mail Host}
-MAIL_PORT={Mail Port}
-MAIL_USERNAME={Mail Username}
-MAIL_PASSWORD={Mail Password}
-    
 ACCESS_TOKEN_SECRET={Access Token Secret}
 RESPONSE_ENCRYPTION_SECRET={Response Encryption Secret}
+
+DEFAULT_LANGUAGE={LANGUAGE CODE}
+```
+
+## Configurations
+
+### Example Preconfigured Mail:
+
+```json
+{
+  "key" : "verifyAccount",
+  "from" : "info@opentemplatehub.com",
+  "mails" : [ 
+      {
+        "language" : "en",
+        "subject" : "Verify Account",
+        "body": "{Verify Account Mail Body}"
+      }
+  ]
+}
+```
+
+If you provide 'to' value to this configuration, POST /sms/me 'to' value will be overwritten.
+
+### Mail Service Configurations
+This is the list of supported mail providers. Configuring only what you need to use is enough.
+
+1. [Gmail](#2-gmail)
+2. [Outlook](#3-outlook)
+3. [Yahoo](#4-yahoo)
+
+### 1. GMAIL
+
+#### Service Configuration
+
+```json
+{
+    "key" : "GMAIL",
+    "payload" : {
+        "host" : "{ smtp.gmail.com }",
+        "port" : "{ 465 }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "GMAIL",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### 2. OUTLOOK
+
+#### Service Configuration
+
+```json
+{
+    "key" : "OUTLOOK",
+    "payload" : {
+        "host" : "{ smtp-mail.outlook.com }",
+        "port" : "{ 587 }",
+        "sslV3": true
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "OUTLOOK",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### 3. YAHOO
+
+#### Service Configuration
+
+```json
+{
+    "key" : "YAHOO",
+    "payload" : {
+        "host" : "{ smtp.mail.yahoo.com }",
+        "port" : "{ 465 }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "YAHOO",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
+```
+
+### Custom Mail Service Configurations
+For the custom mail service configurations, you can build similar configuration below.
+
+#### Service Configuration
+
+```json
+{
+    "key" : "{ Provider Key }",
+    "payload" : {
+        "host" : "{ smtp.host }",
+        "port" : "{ port }"
+    }
+}
+``` 
+
+#### Mail Configuration
+
+```json
+{
+    "provider" : "{ Provider Key }",
+    "username" : "{ Username }",
+    "password" : "{ Password }"
+}
 ```
 
 ## Contributors

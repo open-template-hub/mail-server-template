@@ -7,10 +7,15 @@ import {
   EncryptionUtil,
   ErrorHandlerUtil,
   MessageQueueProvider,
+  MongoDbProvider,
+  PreloadUtil
 } from '@open-template-hub/common';
 import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
+import {
+  router as mailRouter
+} from './mail.route';
 import {
   publicRoutes as monitorPublicRoutes,
   router as monitorRouter,
@@ -23,6 +28,7 @@ const subRoutes = {
 };
 
 export namespace Routes {
+  var mongodb_provider: MongoDbProvider;
   var environment: Environment;
   var message_queue_provider: MessageQueueProvider;
   let errorHandlerUtil: ErrorHandlerUtil;
@@ -41,14 +47,21 @@ export namespace Routes {
   }
 
   export function mount(app: any) {
+    const preloadUtil = new PreloadUtil();
     environment = new Environment();
     errorHandlerUtil = new ErrorHandlerUtil( debugLogUtil, environment.args() );
+    mongodb_provider = new MongoDbProvider( environment.args() );
+
     message_queue_provider = new MessageQueueProvider(environment.args());
+
+    preloadUtil
+    .preload(mongodb_provider)
+    .then(() => console.log('DB preloads are completed.'));
 
     const channelTag = new Environment().args().mqArgs
       ?.mailServerMessageQueueChannel as string;
     message_queue_provider.getChannel(channelTag).then((channel: any) => {
-      const mailQueueConsumer = new MailQueueConsumer(channel);
+      const mailQueueConsumer = new MailQueueConsumer( channel, mongodb_provider, environment.args() );
       message_queue_provider.consume(
         channel,
         channelTag,
@@ -93,7 +106,7 @@ export namespace Routes {
           environment.args(),
           publicRoutes,
           adminRoutes,
-          undefined,
+          mongodb_provider,
           undefined,
           message_queue_provider
         );
@@ -107,6 +120,7 @@ export namespace Routes {
 
     // INFO: Add your routes here
     app.use(subRoutes.monitor, monitorRouter);
+    app.use(subRoutes.mail, mailRouter);
 
     // Use for error handling
     app.use(function (

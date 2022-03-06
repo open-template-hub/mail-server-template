@@ -1,0 +1,20 @@
+### Send Mail
+POST http://localhost:4006/mail/
+Content-Type: application/json
+Authorization: Bearer token
+
+{
+  "mailKey": "ContactUs",
+  "languageCode": "en",
+  "to": "mertsarac@yandex.com",
+  "params": {
+      "firstName": "Mert",
+      "lastName": "Saraç",
+      "email": "mertsarac@yandex.com",
+      "phone": "1234123",
+      "website": "google.com",
+      "companySize": "50",
+      "country":  "Turkey",
+      "message": "ASDF"
+  }
+}
