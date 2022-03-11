@@ -3,22 +3,19 @@
  */
 
 import {
-  context, DebugLogUtil,
+  context,
+  DebugLogUtil,
   EncryptionUtil,
   ErrorHandlerUtil,
   MessageQueueProvider,
   MongoDbProvider,
-  PreloadUtil
+  PreloadUtil,
 } from '@open-template-hub/common';
 import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
-import {
-  router as mailRouter
-} from './mail.route';
-import {
-  router as monitorRouter,
-} from './monitor.route';
+import { router as mailRouter } from './mail.route';
+import { router as monitorRouter } from './monitor.route';
 
 const subRoutes = {
   root: '/',
@@ -33,31 +30,26 @@ export namespace Routes {
   let errorHandlerUtil: ErrorHandlerUtil;
   const debugLogUtil = new DebugLogUtil();
 
-  function populateRoutes(mainRoute: string, routes: Array<string>) {
-    var populated = Array<string>();
-    for (const s of routes) {
-      populated.push(mainRoute + (s === '/' ? '' : s));
-    }
-
-    return populated;
-  }
-
   export function mount(app: any) {
     const preloadUtil = new PreloadUtil();
     environment = new Environment();
-    errorHandlerUtil = new ErrorHandlerUtil( debugLogUtil, environment.args() );
-    mongodb_provider = new MongoDbProvider( environment.args() );
+    errorHandlerUtil = new ErrorHandlerUtil(debugLogUtil, environment.args());
+    mongodb_provider = new MongoDbProvider(environment.args());
 
     message_queue_provider = new MessageQueueProvider(environment.args());
 
     preloadUtil
-    .preload(mongodb_provider)
-    .then(() => console.log('DB preloads are completed.'));
+      .preload(mongodb_provider)
+      .then(() => console.log('DB preloads are completed.'));
 
     const channelTag = new Environment().args().mqArgs
       ?.mailServerMessageQueueChannel as string;
     message_queue_provider.getChannel(channelTag).then((channel: any) => {
-      const mailQueueConsumer = new MailQueueConsumer( channel, mongodb_provider, environment.args() );
+      const mailQueueConsumer = new MailQueueConsumer(
+        channel,
+        mongodb_provider,
+        environment.args()
+      );
       message_queue_provider.consume(
         channel,
         channelTag,
