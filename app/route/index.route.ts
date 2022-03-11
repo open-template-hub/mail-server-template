@@ -17,7 +17,6 @@ import {
   router as mailRouter
 } from './mail.route';
 import {
-  publicRoutes as monitorPublicRoutes,
   router as monitorRouter,
 } from './monitor.route';
 
@@ -33,9 +32,6 @@ export namespace Routes {
   var message_queue_provider: MessageQueueProvider;
   let errorHandlerUtil: ErrorHandlerUtil;
   const debugLogUtil = new DebugLogUtil();
-  
-  var publicRoutes: string[] = [];
-  var adminRoutes: string[] = [];
 
   function populateRoutes(mainRoute: string, routes: Array<string>) {
     var populated = Array<string>();
@@ -70,12 +66,6 @@ export namespace Routes {
       );
     });
 
-    publicRoutes = [...populateRoutes(subRoutes.monitor, monitorPublicRoutes)];
-    console.log('Public Routes: ', publicRoutes);
-
-    adminRoutes = [];
-    console.log('Admin Routes: ', adminRoutes);
-
     const responseInterceptor = (
       req: Request,
       res: Response,
@@ -104,8 +94,6 @@ export namespace Routes {
         res.locals.ctx = await context(
           req,
           environment.args(),
-          publicRoutes,
-          adminRoutes,
           mongodb_provider,
           undefined,
           message_queue_provider
