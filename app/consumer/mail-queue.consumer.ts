@@ -1,14 +1,22 @@
-import { EnvArgs, MongoDbProvider } from '@open-template-hub/common';
+import {
+  ContextArgs,
+  MongoDbProvider,
+  QueueConsumer,
+} from '@open-template-hub/common';
 import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
 import { MailController } from '../controller/mail.controller';
 
-export class MailQueueConsumer {
-  constructor(
-    private channel: any,
-    private mongodbProvider: MongoDbProvider,
-    private environmentArgs: EnvArgs,
-    private mailController = new MailController()
-  ) {}
+export class MailQueueConsumer implements QueueConsumer {
+  private channel: any;
+  private ctxArgs: ContextArgs = {} as ContextArgs;
+
+  constructor(private mailController = new MailController()) {}
+
+  init = (channel: string, ctxArgs: ContextArgs) => {
+    this.channel = channel;
+    this.ctxArgs = ctxArgs;
+    return this;
+  };
 
   onMessage = async (msg: any) => {
     if (msg !== null) {
@@ -41,7 +49,7 @@ export class MailQueueConsumer {
       if (key && params) {
         let hook = async () => {
           await this.mailController.sendMail(
-            this.mongodbProvider,
+            this.ctxArgs.mongodb_provider as MongoDbProvider,
             key as string,
             message.language,
             to as string,
