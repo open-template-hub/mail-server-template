@@ -3,23 +3,18 @@
  */
 
 import {
-  context, DebugLogUtil,
-  EncryptionUtil,
-  ErrorHandlerUtil,
-  MessageQueueProvider,
-  MongoDbProvider,
-  PreloadUtil
+  ContextArgs,
+  MountArgs,
+  MountAssets,
+  Route,
+  RouteArgs,
+  mount as mountApp,
 } from '@open-template-hub/common';
-import { NextFunction, Request, Response } from 'express';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
-import {
-  router as mailRouter
-} from './mail.route';
-import {
-  publicRoutes as monitorPublicRoutes,
-  router as monitorRouter,
-} from './monitor.route';
+import { MailController } from '../controller/mail.controller';
+import { router as mailRouter } from './mail.route';
+import { router as monitorRouter } from './monitor.route';
 
 const subRoutes = {
   root: '/',
@@ -28,109 +23,38 @@ const subRoutes = {
 };
 
 export namespace Routes {
-  var mongodb_provider: MongoDbProvider;
-  var environment: Environment;
-  var message_queue_provider: MessageQueueProvider;
-  let errorHandlerUtil: ErrorHandlerUtil;
-  const debugLogUtil = new DebugLogUtil();
-  
-  var publicRoutes: string[] = [];
-  var adminRoutes: string[] = [];
-
-  function populateRoutes(mainRoute: string, routes: Array<string>) {
-    var populated = Array<string>();
-    for (const s of routes) {
-      populated.push(mainRoute + (s === '/' ? '' : s));
-    }
-
-    return populated;
-  }
-
   export function mount(app: any) {
-    const preloadUtil = new PreloadUtil();
-    environment = new Environment();
-    errorHandlerUtil = new ErrorHandlerUtil( debugLogUtil, environment.args() );
-    mongodb_provider = new MongoDbProvider( environment.args() );
+    const envArgs = new Environment().args();
 
-    message_queue_provider = new MessageQueueProvider(environment.args());
+    const ctxArgs = {
+      envArgs,
+      providerAvailability: {
+        mongo_enabled: true,
+        postgre_enabled: false,
+        mq_enabled: true,
+      },
+    } as ContextArgs;
 
-    preloadUtil
-    .preload(mongodb_provider)
-    .then(() => console.log('DB preloads are completed.'));
+    const assets = {
+      mqChannelTag: envArgs.mqArgs?.mailServerMessageQueueChannel as string,
+      queueConsumer: new MailQueueConsumer(new MailController()),
+      applicationName: 'MailServer',
+    } as MountAssets;
 
-    const channelTag = new Environment().args().mqArgs
-      ?.mailServerMessageQueueChannel as string;
-    message_queue_provider.getChannel(channelTag).then((channel: any) => {
-      const mailQueueConsumer = new MailQueueConsumer( channel, mongodb_provider, environment.args() );
-      message_queue_provider.consume(
-        channel,
-        channelTag,
-        mailQueueConsumer.onMessage,
-        1
-      );
-    });
+    var routes: Array<Route> = [];
 
-    publicRoutes = [...populateRoutes(subRoutes.monitor, monitorPublicRoutes)];
-    console.log('Public Routes: ', publicRoutes);
+    routes.push({ name: subRoutes.monitor, router: monitorRouter });
+    routes.push({ name: subRoutes.mail, router: mailRouter });
 
-    adminRoutes = [];
-    console.log('Admin Routes: ', adminRoutes);
+    const routeArgs = { routes } as RouteArgs;
 
-    const responseInterceptor = (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ) => {
-      var originalSend = res.send;
-      const encryptionUtil = new EncryptionUtil(environment.args());
-      res.send = function () {
-        console.log('Starting Encryption: ', new Date());
-        let encrypted_arguments = encryptionUtil.encrypt(arguments);
-        console.log('Encryption Completed: ', new Date());
+    const args = {
+      app,
+      ctxArgs,
+      routeArgs,
+      assets,
+    } as MountArgs;
 
-        originalSend.apply(res, encrypted_arguments as any);
-      } as any;
-
-      next();
-    };
-
-    // Use this interceptor before routes
-    app.use(responseInterceptor);
-
-    // INFO: Keep this method at top at all times
-    app.all('/*', async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        // create context
-        res.locals.ctx = await context(
-          req,
-          environment.args(),
-          publicRoutes,
-          adminRoutes,
-          mongodb_provider,
-          undefined,
-          message_queue_provider
-        );
-
-        next();
-      } catch (err) {
-        let error = errorHandlerUtil.handle(err);
-        res.status(error.code).json({ message: error.message });
-      }
-    });
-
-    // INFO: Add your routes here
-    app.use(subRoutes.monitor, monitorRouter);
-    app.use(subRoutes.mail, mailRouter);
-
-    // Use for error handling
-    app.use(function (
-      err: Error,
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ) {
-      let error = errorHandlerUtil.handle(err);
-      res.status(error.code).json({ message: error.message });
-    });
+    mountApp(args);
   }
 }
