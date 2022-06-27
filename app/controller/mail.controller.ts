@@ -43,7 +43,7 @@ export class MailController {
   ) => {
     const defaultLanguageCode = process.env.DEFAULT_LANGUAGE ?? 'en';
 
-    var preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
+    const preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
 
     // overwrite 'to' if preconfiguredMail model contains
     if ( preconfiguredMail.to ) {
@@ -76,7 +76,7 @@ export class MailController {
       throw new Error( 'Host can not be found' );
     }
 
-    var templateParams = this.objectToMap( params );
+    const templateParams = this.objectToMap( params );
     const mail = preconfiguredMail.mails[ 0 ];
     const mailBody = this.builderUtil.buildTemplateFromString( mail.body, templateParams );
 
@@ -158,10 +158,10 @@ export class MailController {
   };
 
   private objectToMap = ( obj: object ) => {
-    var m = new Map<string, string>();
+    const map = new Map<string, string>();
     for ( const [ key, value ] of Object.entries( obj ) ) {
-      m.set( '${' + key + '}', value.toString() );
+      map.set( '${' + key + '}', value.toString() );
     }
-    return m;
+    return map;
   };
 }

@@ -12,7 +12,6 @@ import {
 } from '@open-template-hub/common';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
-import { MailController } from '../controller/mail.controller';
 import { router as mailRouter } from './mail.route';
 import { router as monitorRouter } from './monitor.route';
 
@@ -23,7 +22,7 @@ const subRoutes = {
 };
 
 export namespace Routes {
-  export function mount(app: any) {
+  export function mount( app: any ) {
     const envArgs = new Environment().args();
 
     const ctxArgs = {
@@ -37,14 +36,14 @@ export namespace Routes {
 
     const assets = {
       mqChannelTag: envArgs.mqArgs?.mailServerMessageQueueChannel as string,
-      queueConsumer: new MailQueueConsumer(new MailController()),
+      queueConsumer: new MailQueueConsumer(),
       applicationName: 'MailServer',
     } as MountAssets;
 
-    var routes: Array<Route> = [];
+    const routes: Array<Route> = [];
 
-    routes.push({ name: subRoutes.monitor, router: monitorRouter });
-    routes.push({ name: subRoutes.mail, router: mailRouter });
+    routes.push( { name: subRoutes.monitor, router: monitorRouter } );
+    routes.push( { name: subRoutes.mail, router: mailRouter } );
 
     const routeArgs = { routes } as RouteArgs;
 
@@ -55,6 +54,6 @@ export namespace Routes {
       assets,
     } as MountArgs;
 
-    mountApp(args);
+    mountApp( args );
   }
 }
