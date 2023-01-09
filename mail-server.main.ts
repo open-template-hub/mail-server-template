@@ -12,29 +12,29 @@ import { Routes } from './app/route/index.route';
 const debugLogUtil = new DebugLogUtil();
 
 const env = dotenv.config();
-debugLogUtil.log(env.parsed);
+debugLogUtil.log( env.parsed );
 
 // express init
 const app: express.Application = express();
 
 // public files
-app.use(express.static('public'));
+app.use( express.static( 'public' ) );
 
 // parse application/json
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cors());
+app.use( bodyParser.urlencoded( { extended: false } ) );
+app.use( bodyParser.json() );
+app.use( cors() );
 
 // mount routes
-Routes.mount(app);
+Routes.mount( app );
 
 // listen port
-const port: string = process.env.PORT || ('4006' as string);
+const port: string = process.env.PORT || ( '4006' as string );
 
-app.listen(port, () => {
-  console.info('Mail Server is running on port', port);
+app.listen( port, () => {
+  console.info( 'Mail Server is running on port', port );
 
   const usageUtil = new UsageUtil();
   const memoryUsage = usageUtil.getMemoryUsage();
-  console.info(`Startup Memory Usage: ${memoryUsage.toFixed(2)} MB`);
-});
+  console.info( `Startup Memory Usage: ${ memoryUsage.toFixed( 2 ) } MB` );
+} );

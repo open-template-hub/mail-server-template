@@ -6,23 +6,24 @@ import {
   AccountVerificationMailActionParams,
   BuilderUtil,
   ContactUsMailActionParams,
+  Context,
   ForgetPasswordMailActionParams,
   JoinTeamMailActionParams,
   MailUtil,
   MongoDbProvider,
 } from '@open-template-hub/common';
-import { Context } from '@open-template-hub/common';
-import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
-import { PreconfiguredMailRepository } from '../repository/preconfigured-mail.repository';
-import { ServiceProviderRepository } from '../repository/mail-provider.repository';
-import { MailConfigRepository } from '../repository/mail-config.repository';
 import { MailConfig } from '../interface/mail-config.interface';
+import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
 import { ServiceProvider } from '../interface/service-provider.interface';
+import { MailConfigRepository } from '../repository/mail-config.repository';
+import { ServiceProviderRepository } from '../repository/mail-provider.repository';
+import { PreconfiguredMailRepository } from '../repository/preconfigured-mail.repository';
 
 export class MailController {
   constructor(
-    private builderUtil: BuilderUtil = new BuilderUtil()
-  ) {}
+      private builderUtil: BuilderUtil = new BuilderUtil()
+  ) {
+  }
 
   /**
    * send mail
@@ -33,78 +34,78 @@ export class MailController {
    * @param params ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams
    */
   sendMail = async (
-    mongodb_provider: MongoDbProvider,
-    mailKey: string,
-    languageCode: string | undefined,
-    to: string | undefined,
-    params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams | JoinTeamMailActionParams
-    ) => {
-      const defaultLanguageCode = process.env.DEFAULT_LANGUAGE ?? 'en';
+      mongodb_provider: MongoDbProvider,
+      mailKey: string,
+      languageCode: string | undefined,
+      to: string | undefined,
+      params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams | JoinTeamMailActionParams
+  ) => {
+    const defaultLanguageCode = process.env.DEFAULT_LANGUAGE ?? 'en';
 
-      let preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
+    let preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
 
-      // overwrite 'to' if preconfiguredMail model contains
-      if( preconfiguredMail.to ) {
-        to = preconfiguredMail.to
-      }
+    // overwrite 'to' if preconfiguredMail model contains
+    if ( preconfiguredMail.to ) {
+      to = preconfiguredMail.to;
+    }
 
-      if ( !to ) {
-        throw new Error( "'To' not found")
-      }
+    if ( !to ) {
+      throw new Error( '\'To\' not found' );
+    }
 
-      const mailConfig = await this.getMailConfig(
+    const mailConfig = await this.getMailConfig(
         mongodb_provider,
         preconfiguredMail.from
-      );
+    );
 
-      const username = mailConfig.username;
-      const password = mailConfig.password;
-      if( !username || !password ) {
-        throw new Error('Host or Port can not be found');
-      }
+    const username = mailConfig.username;
+    const password = mailConfig.password;
+    if ( !username || !password ) {
+      throw new Error( 'Host or Port can not be found' );
+    }
 
-      const serviceProvider = await this.getServiceProvider(
+    const serviceProvider = await this.getServiceProvider(
         mongodb_provider,
         mailConfig.provider
-      );
+    );
 
-      const host = serviceProvider.payload.host
-      const port = serviceProvider.payload.port
-      if( !host ) {
-        throw new Error('Host can not be found');
-      }
+    const host = serviceProvider.payload.host;
+    const port = serviceProvider.payload.port;
+    if ( !host ) {
+      throw new Error( 'Host can not be found' );
+    }
 
-      let templateParams = this.objectToMap( params );
-      const mail = preconfiguredMail.mails[0] 
-      const mailBody = this.builderUtil.buildTemplateFromString( mail.body, templateParams );
+    let templateParams = this.objectToMap( params );
+    const mail = preconfiguredMail.mails[ 0 ];
+    const mailBody = this.builderUtil.buildTemplateFromString( mail.body, templateParams );
 
-      let mailUtil = new MailUtil(
+    let mailUtil = new MailUtil(
         username,
         password,
         host,
         serviceProvider.payload.sslV3 ?? false,
         port
-      );
+    );
 
-      mailUtil.send(
+    mailUtil.send(
         to,
         mail.subject,
         mailBody
-      )
-    };
+    );
+  };
 
   createPreconfiguredMail = async (
       context: Context,
       preconfiguredMail: PreconfiguredMail
   ) => {
-    const conn = context.mongodb_provider.getConnection()
-    const preconfiguredMailRepository = await new PreconfiguredMailRepository().initialize(conn);
-    return await preconfiguredMailRepository.createPreconfiguredMail(preconfiguredMail)
-  }
+    const conn = context.mongodb_provider.getConnection();
+    const preconfiguredMailRepository = await new PreconfiguredMailRepository().initialize( conn );
+    return await preconfiguredMailRepository.createPreconfiguredMail( preconfiguredMail );
+  };
 
   private getServiceProvider = async (
-    provider: MongoDbProvider,
-    key: string
+      provider: MongoDbProvider,
+      key: string
   ): Promise<ServiceProvider> => {
     const conn = provider.getConnection();
 
@@ -112,16 +113,16 @@ export class MailController {
 
     let serviceProvider: any = await serviceProviderRepository.getServiceProviderByKey( key );
 
-    if( !serviceProvider ) {
+    if ( !serviceProvider ) {
       throw new Error( 'Service can not be found' );
     }
 
     return serviceProvider;
-  }
+  };
 
   private getMailConfig = async (
-    provider: MongoDbProvider,
-    username: string
+      provider: MongoDbProvider,
+      username: string
   ): Promise<MailConfig> => {
     const conn = provider.getConnection();
 
@@ -129,18 +130,18 @@ export class MailController {
 
     let mailConfig: any = await mailConfigRepository.getMailConfigByUsername( username );
 
-    if( !mailConfig ) {
+    if ( !mailConfig ) {
       throw new Error( 'MailConfig can not be found' );
     }
 
     return mailConfig;
-  }
+  };
 
   private getPreconfiguredMail = async (
-    provider: MongoDbProvider,
-    mailKey: string,
-    languageCode: string | undefined,
-    defaultLanguageCode: string
+      provider: MongoDbProvider,
+      mailKey: string,
+      languageCode: string | undefined,
+      defaultLanguageCode: string
   ): Promise<PreconfiguredMail> => {
     const conn = provider.getConnection();
 
@@ -148,17 +149,17 @@ export class MailController {
 
     const preconfiguredMail: PreconfiguredMail[] = await preconfiguredMailRepository.getPreconfiguredMail( mailKey, languageCode, defaultLanguageCode );
 
-    if( preconfiguredMail.length === 0 || preconfiguredMail[0].mails?.length < 1 ) {
+    if ( preconfiguredMail.length === 0 || preconfiguredMail[ 0 ].mails?.length < 1 ) {
       throw new Error( 'Preconfigured mail not found' );
     }
 
-    return preconfiguredMail[0];
-  }
+    return preconfiguredMail[ 0 ];
+  };
 
-  private objectToMap = (obj: object) => {
+  private objectToMap = ( obj: object ) => {
     var m = new Map<string, string>();
-    for (const [key, value] of Object.entries(obj)) {
-      m.set('${' + key + '}', value.toString());
+    for ( const [ key, value ] of Object.entries( obj ) ) {
+      m.set( '${' + key + '}', value.toString() );
     }
     return m;
   };

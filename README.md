@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-Open Template Hub - Mail Server Template v4
+Open Template Hub - Mail Server Template v5
 </h1>
 
 [![License](https://img.shields.io/github/license/open-template-hub/mail-server-template?color=43b043&style=for-the-badge)](LICENSE)
@@ -94,6 +94,7 @@ DEFAULT_LANGUAGE={LANGUAGE CODE}
 If you provide 'to' value to this configuration, POST /sms/me 'to' value will be overwritten.
 
 ### Mail Service Configurations
+
 This is the list of supported mail providers. Configuring only what you need to use is enough.
 
 1. [Gmail](#2-gmail)
@@ -174,6 +175,7 @@ This is the list of supported mail providers. Configuring only what you need to 
 ```
 
 ### Custom Mail Service Configurations
+
 For the custom mail service configurations, you can build similar configuration below.
 
 #### Service Configuration

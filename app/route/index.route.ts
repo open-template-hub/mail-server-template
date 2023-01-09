@@ -2,14 +2,7 @@
  * @description holds index routes
  */
 
-import {
-  ContextArgs,
-  MountArgs,
-  MountAssets,
-  Route,
-  RouteArgs,
-  mount as mountApp,
-} from '@open-template-hub/common';
+import { ContextArgs, mount as mountApp, MountArgs, MountAssets, Route, RouteArgs, } from '@open-template-hub/common';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import { router as mailRouter } from './mail.route';

@@ -8,13 +8,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lc
   "languageCode": "tr",
   "to": "mertlsarac@gmail.com",
   "params": {
-      "firstName": "Mert",
-      "lastName": "Saraç",
-      "email": "mertlsarac@gmail.com",
-      "phone": "1234123",
-      "website": "google.com",
-      "companySize": "50",
-      "country":  "Turkey",
-      "message": "ASDF"
+    "firstName": "Mert",
+    "lastName": "Saraç",
+    "email": "mertlsarac@gmail.com",
+    "phone": "1234123",
+    "website": "google.com",
+    "companySize": "50",
+    "country": "Turkey",
+    "message": "ASDF"
   }
 }
