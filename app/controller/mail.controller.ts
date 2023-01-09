@@ -8,22 +8,21 @@ import {
   ContactUsMailActionParams,
   Context,
   ForgetPasswordMailActionParams,
+  JoinTeamMailActionParams,
   MailUtil,
   MongoDbProvider,
 } from '@open-template-hub/common';
-import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
-import { PreconfiguredMailRepository } from '../repository/preconfigured-mail.repository';
-import { ServiceProviderRepository } from '../repository/mail-provider.repository';
-import { MailConfigRepository } from '../repository/mail-config.repository';
 import { MailConfig } from '../interface/mail-config.interface';
+import { PreconfiguredMail } from '../interface/preconfigured-mail.interface';
 import { ServiceProvider } from '../interface/service-provider.interface';
+import { MailConfigRepository } from '../repository/mail-config.repository';
+import { ServiceProviderRepository } from '../repository/mail-provider.repository';
+import { PreconfiguredMailRepository } from '../repository/preconfigured-mail.repository';
 
 export class MailController {
-
-  builderUtil: BuilderUtil;
-
-  constructor() {
-    this.builderUtil = new BuilderUtil();
+  constructor(
+      private builderUtil: BuilderUtil = new BuilderUtil()
+  ) {
   }
 
   /**
@@ -39,11 +38,11 @@ export class MailController {
       mailKey: string,
       languageCode: string | undefined,
       to: string | undefined,
-      params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams
+      params: ContactUsMailActionParams | ForgetPasswordMailActionParams | AccountVerificationMailActionParams | JoinTeamMailActionParams
   ) => {
     const defaultLanguageCode = process.env.DEFAULT_LANGUAGE ?? 'en';
 
-    const preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
+    let preconfiguredMail = await this.getPreconfiguredMail( mongodb_provider, mailKey, languageCode, defaultLanguageCode );
 
     // overwrite 'to' if preconfiguredMail model contains
     if ( preconfiguredMail.to ) {
@@ -76,7 +75,7 @@ export class MailController {
       throw new Error( 'Host can not be found' );
     }
 
-    const templateParams = this.objectToMap( params );
+    let templateParams = this.objectToMap( params );
     const mail = preconfiguredMail.mails[ 0 ];
     const mailBody = this.builderUtil.buildTemplateFromString( mail.body, templateParams );
 
@@ -101,7 +100,7 @@ export class MailController {
   ) => {
     const conn = context.mongodb_provider.getConnection();
     const preconfiguredMailRepository = await new PreconfiguredMailRepository().initialize( conn );
-    return preconfiguredMailRepository.createPreconfiguredMail( preconfiguredMail );
+    return await preconfiguredMailRepository.createPreconfiguredMail( preconfiguredMail );
   };
 
   private getServiceProvider = async (
@@ -158,10 +157,10 @@ export class MailController {
   };
 
   private objectToMap = ( obj: object ) => {
-    const map = new Map<string, string>();
+    var m = new Map<string, string>();
     for ( const [ key, value ] of Object.entries( obj ) ) {
-      map.set( '${' + key + '}', value.toString() );
+      m.set( '${' + key + '}', value.toString() );
     }
-    return map;
+    return m;
   };
 }

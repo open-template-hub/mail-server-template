@@ -1,8 +1,4 @@
-import {
-  ContextArgs,
-  MongoDbProvider,
-  QueueConsumer,
-} from '@open-template-hub/common';
+import { ContextArgs, MongoDbProvider, QueueConsumer, } from '@open-template-hub/common';
 import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
 import { MailController } from '../controller/mail.controller';
 

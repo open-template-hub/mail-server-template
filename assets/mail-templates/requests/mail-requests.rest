@@ -1,20 +1,20 @@
 ### Send Mail
 POST http://localhost:4006/mail/
 Content-Type: application/json
-Authorization: Bearer token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lcnQiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2NDUzNTkyNDksImV4cCI6MTY0NTQ0NTY0OX0.BnXhkzHO4i_UXOVpqyOOx_kbQEE8o3g8DereH0_6Ypc
 
 {
-  "mailKey": "ContactUs",
-  "languageCode": "en",
-  "to": "mertsarac@yandex.com",
+  "mailKey": "yandexTest",
+  "languageCode": "tr",
+  "to": "mertlsarac@gmail.com",
   "params": {
-      "firstName": "Mert",
-      "lastName": "Saraç",
-      "email": "mertsarac@yandex.com",
-      "phone": "1234123",
-      "website": "google.com",
-      "companySize": "50",
-      "country":  "Turkey",
-      "message": "ASDF"
+    "firstName": "Mert",
+    "lastName": "Saraç",
+    "email": "mertlsarac@gmail.com",
+    "phone": "1234123",
+    "website": "google.com",
+    "companySize": "50",
+    "country": "Turkey",
+    "message": "ASDF"
   }
 }
