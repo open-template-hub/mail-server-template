@@ -107,7 +107,10 @@ export class MailQueueConsumer implements QueueConsumer {
       const message = {
         sender: MessageQueueChannelType.MAIL,
         receiver: MessageQueueChannelType.DLQ,
-        message: msg,
+        message: {
+          owner: MessageQueueChannelType.MAIL,
+          msg,
+        },
       } as QueueMessage;
 
       await this.ctxArgs.message_queue_provider?.publish(
