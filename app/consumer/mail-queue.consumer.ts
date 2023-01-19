@@ -1,20 +1,23 @@
 import {
+  AbstractQueueConsumer,
   ContextArgs,
   MessageQueueChannelType,
   MongoDbProvider,
   QueueConsumer,
-  QueueMessage,
 } from '@open-template-hub/common';
 import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
 import { MailController } from '../controller/mail.controller';
 
-export class MailQueueConsumer implements QueueConsumer {
-  private channel: any;
-  private ctxArgs: ContextArgs = {} as ContextArgs;
+export class MailQueueConsumer
+  extends AbstractQueueConsumer
+  implements QueueConsumer
+{
   private mailController: MailController;
 
   constructor() {
+    super();
     this.mailController = new MailController();
+    this.ownerChannelType = MessageQueueChannelType.MAIL;
   }
 
   init = (channel: string, ctxArgs: ContextArgs) => {
@@ -68,60 +71,6 @@ export class MailQueueConsumer implements QueueConsumer {
         this.channel.reject(msg, false);
         return;
       }
-    }
-  };
-
-  private operate = async (
-    msg: any,
-    msgObj: any,
-    requeue: boolean,
-    hook: Function
-  ) => {
-    try {
-      console.log(
-        'Message Received with deliveryTag: ' + msg.fields.deliveryTag,
-        msgObj
-      );
-      await hook();
-      await this.channel.ack(msg);
-      console.log(
-        'Message Processed with deliveryTag: ' + msg.fields.deliveryTag,
-        msgObj
-      );
-    } catch (e) {
-      console.log(
-        'Error with processing deliveryTag: ' + msg.fields.deliveryTag,
-        msgObj,
-        e
-      );
-
-      await this.moveToDLQ(msg, requeue);
-    }
-  };
-
-  private moveToDLQ = async (msg: any, requeue: boolean) => {
-    try {
-      const orchestrationChannelTag =
-        this.ctxArgs.envArgs.mqArgs?.orchestrationServerMessageQueueChannel;
-
-      const message = {
-        sender: MessageQueueChannelType.MAIL,
-        receiver: MessageQueueChannelType.DLQ,
-        message: {
-          owner: MessageQueueChannelType.MAIL,
-          msg,
-        },
-      } as QueueMessage;
-
-      await this.ctxArgs.message_queue_provider?.publish(
-        message,
-        orchestrationChannelTag as string
-      );
-
-      this.channel.reject(msg, false);
-    } catch (e) {
-      console.log('Error while moving message to DLQ: ', msg);
-      this.channel.nack(msg, false, requeue);
     }
   };
 }
