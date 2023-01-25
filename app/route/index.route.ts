@@ -2,7 +2,14 @@
  * @description holds index routes
  */
 
-import { ContextArgs, mount as mountApp, MountArgs, MountAssets, Route, RouteArgs, } from '@open-template-hub/common';
+import {
+  ContextArgs,
+  mount as mountApp,
+  MountArgs,
+  MountAssets,
+  Route,
+  RouteArgs,
+} from '@open-template-hub/common';
 import { Environment } from '../../environment';
 import { MailQueueConsumer } from '../consumer/mail-queue.consumer';
 import { router as mailRouter } from './mail.route';
@@ -15,7 +22,7 @@ const subRoutes = {
 };
 
 export namespace Routes {
-  export function mount( app: any ) {
+  export function mount(app: any) {
     const envArgs = new Environment().args();
 
     const ctxArgs = {
@@ -24,6 +31,7 @@ export namespace Routes {
         mongo_enabled: true,
         postgre_enabled: false,
         mq_enabled: true,
+        redis_enabled: true,
       },
     } as ContextArgs;
 
@@ -35,8 +43,8 @@ export namespace Routes {
 
     const routes: Array<Route> = [];
 
-    routes.push( { name: subRoutes.monitor, router: monitorRouter } );
-    routes.push( { name: subRoutes.mail, router: mailRouter } );
+    routes.push({ name: subRoutes.monitor, router: monitorRouter });
+    routes.push({ name: subRoutes.mail, router: mailRouter });
 
     const routeArgs = { routes } as RouteArgs;
 
@@ -47,6 +55,6 @@ export namespace Routes {
       assets,
     } as MountArgs;
 
-    mountApp( args );
+    mountApp(args);
   }
 }
