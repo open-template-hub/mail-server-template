@@ -1,17 +1,19 @@
-import { DbArgs, EnvArgs, MqArgs, TokenArgs, } from '@open-template-hub/common';
+import { DbArgs, EnvArgs, MqArgs, TokenArgs } from '@open-template-hub/common';
 
 export class Environment {
-  constructor( private _args: EnvArgs = {} as EnvArgs ) {
+  constructor(private _args: EnvArgs = {} as EnvArgs) {
     const dbArgs = {
       mongoDbConnectionLimit: process.env.MONGODB_CONNECTION_LIMIT,
-      mongoDbUri: process.env.MONGODB_URI
+      mongoDbUri: process.env.MONGODB_URI,
+      redisUri: process.env.REDISCLOUD_URL,
+      redisConnectionLimit: process.env.REDIS_CONNECTION_LIMIT,
     } as DbArgs;
 
     const mqArgs = {
       messageQueueConnectionUrl: process.env.CLOUDAMQP_URL,
       mailServerMessageQueueChannel: process.env.MAIL_SERVER_QUEUE_CHANNEL,
       orchestrationServerMessageQueueChannel:
-      process.env.ORCHESTRATION_SERVER_QUEUE_CHANNEL,
+        process.env.ORCHESTRATION_SERVER_QUEUE_CHANNEL,
     } as MqArgs;
 
     const tokenArgs = {
