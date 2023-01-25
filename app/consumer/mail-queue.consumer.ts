@@ -4,6 +4,7 @@ import {
   MessageQueueChannelType,
   MongoDbProvider,
   QueueConsumer,
+  RedisProvider,
 } from '@open-template-hub/common';
 import { MailActionType } from '@open-template-hub/common/lib/action/mail.action';
 import { MailController } from '../controller/mail.controller';
@@ -57,6 +58,7 @@ export class MailQueueConsumer
       if (key && params) {
         let hook = async () => {
           await this.mailController.sendMail(
+            this.ctxArgs.redis_provider as RedisProvider,
             this.ctxArgs.mongodb_provider as MongoDbProvider,
             key as string,
             message.language,
