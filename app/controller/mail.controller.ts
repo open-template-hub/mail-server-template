@@ -197,7 +197,12 @@ export class MailController {
     cacheKey: string
   ) => {
     const cache = redis_provider.getConnection();
-    return await cache.get(cacheKey);
+    const preconfiguredMailString = await cache.get(cacheKey);
+    if (preconfiguredMailString) {
+      return JSON.parse(preconfiguredMailString);
+    } else {
+      return null;
+    }
   };
 
   private putPreconfiguredMailIntoCache = async (
@@ -206,7 +211,7 @@ export class MailController {
     preconfiguredMail: PreconfiguredMail
   ) => {
     const cache = redis_provider.getConnection();
-    await cache.set(cacheKey, preconfiguredMail);
+    await cache.set(cacheKey, JSON.stringify(preconfiguredMail));
 
     const dailyExpireInSeconds = 60 * 60 * 24;
     await cache.expire(cacheKey, dailyExpireInSeconds);
