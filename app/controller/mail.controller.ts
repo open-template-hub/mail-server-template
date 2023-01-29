@@ -161,14 +161,14 @@ export class MailController {
     languageCode: string | undefined,
     defaultLanguageCode: string
   ): Promise<PreconfiguredMail> => {
-    var preconfiguredMail: PreconfiguredMail;
+    var preconfiguredMail: PreconfiguredMail | undefined;
 
     const cacheKey = "MAIL_" + mailKey + '_' + languageCode ?? defaultLanguageCode;
 
-    preconfiguredMail = await this.getPreconfiguredMailFromCache(
-      redis_provider,
-      cacheKey
-    );
+    // preconfiguredMail = await this.getPreconfiguredMailFromCache(
+    //   redis_provider,
+    //   cacheKey
+    // );
 
     if (!preconfiguredMail) {
       preconfiguredMail = await this.getPreconfiguredMailFromDb(
